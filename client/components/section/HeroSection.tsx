@@ -6,13 +6,13 @@ export default function HeroSection() {
 
     return (
         <section
-            className="py-24 md:py-36 min-h-screen flex items-center relative overflow-hidden"
+            className="py-24 md:py-36 min-h-screen flex items-center relative overflow-hidden z-0"
             style={{
                 // KEEPING THE ORIGINAL IMAGE AND STYLES
                 backgroundImage: `url(${heroImagePath})`,
                 backgroundSize: 'cover',        // Ensures the image covers the entire section
                 backgroundPosition: 'center',   // Centers the image
-                backgroundAttachment: 'fixed',  // Optional: Parallax-like scroll
+                backgroundAttachment: '',  // Optional: Parallax-like scroll
             }}
         >
             {/* Dark Overlay for better text readability on the image */}
