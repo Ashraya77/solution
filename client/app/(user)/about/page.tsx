@@ -15,17 +15,17 @@ const ORGANIZATION_INFO = {
 export default function page() {
     
     // The defined color palette is dark blue, crisp white, and sky blue accents.
-    const darkBg = "bg-gray-900"; // Dark section background
-    const accentBlue = "text-sky-400"; // Light blue for accent text/icons
-    const primaryBlue = "bg-blue-600"; // Main button and highlight color
-    const textLight = "text-gray-100"; // Light text on dark backgrounds
+    const darkBg = "bg-sky-600"; // Dark section background
+    const accentBlue = "text-yellow-400"; // Light blue for accent text/icons
+    const primaryBlue = "bg-yellow-400"; // Main button and highlight color
+    const textLight = "text-white"; // Light text on dark backgrounds
     
     // Component for reusable feature cards
     const FeaturePillar = ({ icon, title, description }) => (
         <div className="p-8 bg-white/5 rounded-2xl border border-sky-600/20 backdrop-blur-sm transition duration-300 hover:border-sky-400/50 hover:shadow-xl">
             <span className={`text-5xl mb-4 inline-block ${accentBlue}`}>{icon}</span>
             <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
-            <p className="text-gray-400 leading-relaxed">{description}</p>
+            <p className="text-gray-300 leading-relaxed">{description}</p>
         </div>
     );
 
@@ -40,14 +40,14 @@ export default function page() {
                             About Solution Computer House
                         </p>
                         <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight leading-snug">
-                            Empowering the Future of Tech in <span className="text-blue-500">Pokhara.</span>
+                            Empowering the Future of Tech in <span className="text-yellow-400">Pokhara.</span>
                         </h1>
-                        <p className="mt-8 text-2xl text-gray-400 max-w-4xl">
+                        <p className="mt-8 text-2xl text-white max-w-4xl">
                             We are the premier institution for digital education in Hemja, Pokhara, committed to transforming local talent into global professionals through specialized training.
                         </p>
                         <a 
                             href="/contact" 
-                            className={`mt-10 inline-block px-10 py-4 text-lg font-bold rounded-full shadow-lg ${primaryBlue} text-white transition duration-300 hover:bg-blue-700 transform hover:scale-[1.03]`}
+                            className={`mt-10 inline-block px-10 py-4 text-lg font-bold rounded-full shadow-lg ${primaryBlue} text-black transition duration-300 hover:bg-yellow-500 transform hover:scale-[1.03]`}
                         >
                             Explore Our Courses →
                         </a>
@@ -71,7 +71,7 @@ export default function page() {
                             </p>
                             
                             <blockquote className="border-l-4 border-sky-500 pl-4 py-2 italic text-gray-600 font-medium text-xl">
-                                "The solution to tomorrow's challenges lies in today's education."
+                                "The Ultimate IT Solutions"
                             </blockquote>
                         </div>
                         
@@ -89,14 +89,14 @@ export default function page() {
                                     <span className="text-blue-500 w-6 h-6 mr-3">🏠</span>
                                     <p className="text-gray-800 font-semibold">Address:</p>
                                 </div>
-                                <p className="ml-9 text-gray-600">{ORGANIZATION_INFO.address}</p>
+                                <p className="ml-9 text-gray-500">{ORGANIZATION_INFO.address}</p>
                             </div>
                             
                             <a 
                                 href={ORGANIZATION_INFO.mapLink} 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
-                                className={`mt-6 inline-flex items-center text-base font-semibold ${primaryBlue} text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-300`}
+                                className={`mt-6 inline-flex items-center text-base font-semibold ${primaryBlue} text-white px-6 py-3 rounded-full hover:bg-yellow-500 transition duration-300`}
                             >
                                 View on Map
                                 <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
@@ -112,7 +112,7 @@ export default function page() {
                     <h2 className={`text-4xl md:text-5xl font-extrabold ${textLight} mb-4`}>
                         Our Three Pillars of Success
                     </h2>
-                    <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-16">
+                    <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-16">
                         We deliver excellence through a model built on quality, relevance, and community focus.
                     </p>
                     
@@ -144,7 +144,7 @@ export default function page() {
                 </p>
                 <a 
                     href="/contact" 
-                    className={`inline-block px-10 py-4 text-lg font-bold rounded-full shadow-lg ${primaryBlue} text-white transition duration-300 hover:bg-blue-700 transform hover:scale-[1.05]`}
+                    className={`inline-block px-10 py-4 text-lg font-bold rounded-full shadow-lg ${primaryBlue} text-white transition duration-300 hover:bg-yellow-500 transform hover:scale-[1.05]`}
                 >
                     Enroll Now or Ask a Question
                 </a>
