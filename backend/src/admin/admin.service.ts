@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
 export type Admin = {
+  userId: number;
   username: string;
   password: string;
 };
 
 const admins: Admin[] = [
   {
+    userId:1,
     username: 'john',
     password: 'pokhara',
   },
@@ -15,13 +17,12 @@ const admins: Admin[] = [
 @Injectable()
 export class AdminService {
   async findAdmin(
-    username: string,
-    password: string,
+    username: string
   ): Promise<Admin | undefined> {
     return admins.find(
       admin =>
-        admin.username === username &&
-        admin.password === password,
+        admin.username === username
+       
     );
   }
 }
