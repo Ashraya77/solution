@@ -153,23 +153,7 @@ export default function page() {
                 </div>
             </section>
             
-            {/* 3. FINAL CTA SECTION: High-visibility footer CTA */}
-            <div className={`text-center py-16 ${primaryBg} bg-opacity-95 shadow-2xl border-t-8 border-yellow-400`}>
-                <h2 className="text-4xl font-extrabold text-white mb-4">
-                    Ready to Transform Your Career?
-                </h2>
-                <p className="text-xl text-sky-100 mb-8">
-                    Your enrollment begins on our contact page. Secure your spot today!
-                </p>
-                
-                {/* Main "Enroll Now" Button */}
-                <a 
-                    href="/contact" 
-                    className={`inline-block px-12 py-5 text-xl font-bold rounded-full shadow-2xl text-gray-900 ${accentBg} hover:bg-yellow-500 transition duration-300 transform hover:scale-[1.08]`}
-                >
-                    Enroll Now
-                </a>
-            </div>
+            
         </div>
     );
 }
