@@ -4,13 +4,13 @@ import React from 'react';
 // --- Solution Computer House Details ---
 const ORGANIZATION_INFO = {
     name: "Solution Computer House",
-    address: "Pokhara-25, Hemja, Gandaki Province, Nepal", 
+    address: "Pokhara-25, Hemja, Gandaki Province, Nepal",
 };
 // -------------------------------------
 
 
 export default function page() {
-    
+
     // Defined Tailwind Colors
     const primaryColor = "text-sky-600";
     const primaryBg = "bg-sky-600";
@@ -29,7 +29,7 @@ export default function page() {
             duration: "2 Months | Certification Available",
             features: ["Microsoft Office Mastery", "Professional Typing Speed", "Digital File Management", "Email & Internet Security"],
             // Updated to a placeholder image path
-            imagePath: "/herosection.png", 
+            imagePath: "/herosection.png",
             alignment: "right"
         },
         {
@@ -41,7 +41,7 @@ export default function page() {
             duration: "4-6 Months | Project Portfolio Built",
             features: ["React Component Architecture", "API Design with Node.js", "MongoDB NoSQL Database", "Version Control (Git)"],
             // Updated to a placeholder image path
-            imagePath: "/herosection.png", 
+            imagePath: "/herosection.png",
             alignment: "left"
         },
         {
@@ -53,45 +53,57 @@ export default function page() {
             duration: "6-12 Months | Diploma Awarded",
             features: ["Tally & Financial Accounting", "Professional Graphic Design", "Data Entry & Analysis", "Advanced Spreadsheet Automation"],
             // Using the path you provided
-            imagePath: "/herosection.png", 
+            imagePath: "/herosection.png",
             alignment: "right"
         },
     ];
-    
-    // Component for individual Course Blocks
-    const CourseBlock = ({ course, index }) => {
+    type Course = {
+        id: number;
+        title: string;
+        level: string;
+        description: string;
+        icon: string;
+        duration: string;
+        features: string[];
+        imagePath: string;
+        alignment: string;
+    };
+
+    interface CourseBlockProps {
+        course: Course;
+        index: number;
+    }
+    const CourseBlock = ({ course, index }: CourseBlockProps) => {
         const isLeft = course.alignment === 'left';
-        
+
         return (
             <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16 px-6 lg:px-0 border-b border-gray-200 ${isLeft ? 'lg:pr-12' : 'lg:pl-12'}`}>
-                
+
                 {/* Image Section */}
                 <div className={`p-6 rounded-xl shadow-2xl ${primaryBg} ${isLeft ? 'lg:order-1' : 'lg:order-2'} transition duration-500 hover:scale-[1.01] hover:shadow-sky-500/50`}>
                     <div className="aspect-video relative rounded-lg overflow-hidden">
-                        {/* This is the main change: Using the <img> tag
-                            The outer div with aspect-video and relative classes ensures the image maintains aspect ratio 
-                        */}
-                        <img 
-                            src={course.imagePath} 
-                            alt={`Visual representation of the ${course.title} course`} 
+                       
+                        <img
+                            src={course.imagePath}
+                            alt={`Visual representation of the ${course.title} course`}
                             className="w-full h-full object-cover transition duration-500 group-hover:opacity-90"
                             loading="lazy"
                             // Added a background color for when the image is loading/missing, matching the primary color
-                            style={{ backgroundColor: '#2563EB' }} 
+                            style={{ backgroundColor: '#2563EB' }}
                         />
                     </div>
                 </div>
 
                 {/* Content Section (Left/Right depending on alignment) */}
                 <div className={`${isLeft ? 'lg:order-2' : 'lg:order-1'}`}>
-                    
+
                     <p className={`text-sm font-semibold tracking-widest uppercase mb-2 ${accentColor}`}>
                         {course.level}
                     </p>
                     <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
                         {course.title}
                     </h2>
-                    
+
                     <p className="text-xl text-gray-600 mb-6 leading-relaxed">
                         {course.description}
                     </p>
@@ -112,10 +124,10 @@ export default function page() {
                             </li>
                         ))}
                     </ul>
-                    
+
                     {/* Enroll CTA */}
-                    <a 
-                        href="/contact" 
+                    <a
+                        href="/contact"
                         className={`inline-block px-8 py-3 text-lg font-bold rounded-full shadow-lg ${accentBg} text-black transition duration-300 hover:bg-yellow-500 transform hover:translate-y-0.5`}
                     >
                         Inquire About This Course
@@ -127,7 +139,7 @@ export default function page() {
 
     return (
         <div className={`min-h-screen font-sans ${lightBg}`}>
-            
+
             {/* 1. HEADER SECTION: Dynamic, full-bleed intro */}
             <header className={`${primaryBg} pt-24 pb-20 shadow-2xl`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -142,18 +154,18 @@ export default function page() {
                     </p>
                 </div>
             </header>
-            
+
             {/* 2. COURSE SHOWCASE: Dynamic Asymmetrical Grid */}
             <section className="py-10 sm:py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    
+
                     {COURSES.map((course, index) => (
                         <CourseBlock key={course.id} course={course} index={index} />
                     ))}
                 </div>
             </section>
-            
-            
+
+
         </div>
     );
 }

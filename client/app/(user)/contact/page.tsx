@@ -20,6 +20,20 @@ const ContactMetadata = {
     ogType: "website",
     ogUrl: "https://www.yourdomain.com/contact", // Replace with actual URL
 };
+
+interface CourseItem {
+  title: string;
+  description: string;
+  alignment: 'left' | 'right';
+  image?: string; // Optional if not all courses have an image
+  // Add any other properties your course object has (e.g. price, duration)
+}
+
+// 2. Define the props for the CourseBlock component
+interface CourseBlockProps {
+  course: CourseItem;
+  index: number;
+}
 // -------------------------------------------
 
 
@@ -112,7 +126,7 @@ export default function page() {
                                     <textarea
                                         id="message"
                                         name="message"
-                                        rows="4"
+                                        rows={4}
                                         required
                                         className="text-black mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"
                                     ></textarea>

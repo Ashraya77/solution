@@ -5,7 +5,8 @@ import { courses } from '@/constants/navLinks';
 
 const Courses = () => {
   const lightBg = "bg-gray-50";
-  
+
+
   
 
   return (

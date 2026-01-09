@@ -1,12 +1,17 @@
 import React from 'react';
 import { Play, Timer, TrendingUp, ChevronRight } from 'lucide-react';
 
-const CourseCard = ({ title, duration, level, price }) => {
+type CourseCardtypes = {
+  title: string;
+  duration: string;
+  level: string;
+  price: string;
+}
+const CourseCard = ({ title, duration, level, price }: CourseCardtypes) => {
   return (
-    <div className="group relative w-full max-w-sm p-[1px] rounded-[24px] bg-gradient-to-b from-slate-200 to-transparent hover:from-sky-400 transition-all duration-500">
+    <div className="group relative w-full max-w-sm p-px rounded-3xl bg-linear-to-b from-slate-200 to-transparent hover:from-sky-400 transition-all duration-500">
       <div className="relative bg-white p-6 rounded-[23px] overflow-hidden">
         
-        {/* Subtle Background Accent */}
         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <TrendingUp size={80} strokeWidth={1} />
         </div>

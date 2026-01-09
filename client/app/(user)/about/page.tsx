@@ -1,6 +1,7 @@
 "use client"
 import React from 'react';
 
+
 // --- Solution Computer House Details ---
 const ORGANIZATION_INFO = {
     name: "Solution Computer House",
@@ -13,7 +14,11 @@ const ORGANIZATION_INFO = {
 
 
 export default function page() {
-    
+  interface FeaturePillarProps {
+  icon: React.ReactNode; // ReactNode allows strings, emojis, or JSX elements
+  title: string;
+  description: string;
+}
     // The defined color palette is dark blue, crisp white, and sky blue accents.
     const darkBg = "bg-sky-600"; // Dark section background
     const accentBlue = "text-yellow-400"; // Light blue for accent text/icons
@@ -21,7 +26,7 @@ export default function page() {
     const textLight = "text-white"; // Light text on dark backgrounds
     
     // Component for reusable feature cards
-    const FeaturePillar = ({ icon, title, description }) => (
+    const FeaturePillar = ({ icon, title, description }: FeaturePillarProps) => (
         <div className="p-8 bg-white/5 rounded-2xl border border-sky-600/20 backdrop-blur-sm transition duration-300 hover:border-sky-400/50 hover:shadow-xl">
             <span className={`text-5xl mb-4 inline-block ${accentBlue}`}>{icon}</span>
             <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
