@@ -11,8 +11,8 @@ export default function Navbar() {
   return (
     <nav className="fixed z-10 left-0 right-0 top-2 bg-white/20 border-b border-gray-300 backdrop-blur-md p-4 md:mx-80 rounded-3xl">
       <div className="px-4 md:px-10 flex justify-between items-center">
-        <Link href="/" className="text-white text-2xl font-bold hover:text-gray-300 transition duration-300">
-          Solution
+        <Link href="/" className="text-yellow-400 font-bold text-2xl font-bold hover:text-gray-300 transition duration-300">
+        SOLUTION
         </Link>
         
         {/* Desktop navbar */}

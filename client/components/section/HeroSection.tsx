@@ -5,11 +5,11 @@ export default function HeroSection() {
 
     return (
         <section
-            className="py-24 md:py-36 min-h-screen flex items-center relative overflow-hidden z-0 "
+            className="py-14 md:py-36 min-h-screen flex items-center relative overflow-hidden z-0 "
             style={{
                 backgroundImage: `url(${heroImagePath})`,
                 backgroundSize: 'cover',        
-                backgroundPosition: 'center',  
+                backgroundPosition: '60% 30%',  
                 backgroundAttachment: '',  
             }}
         >   

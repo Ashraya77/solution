@@ -24,7 +24,7 @@ const TrainingFeatures = () => {
   ];
 
   return (
-    <section className="py-24 px-6 bg-[#fcfcfd]">
+    <section className="py-14 px-6 bg-[#fcfcfd]">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
         
         {/* Left Content Side */}

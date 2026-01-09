@@ -8,7 +8,7 @@ export default function Gallery() {
                     font-family: 'Poppins', sans-serif;
                 }
             `}</style>
-            <div className="bg-gray-300 py-10">
+            <div className="bg-gray-300 py-10 hidden md:block">
                 <h1 className="text-3xl font-semibold text-black text-center mx-auto">Our Latest Gallery</h1>
                 <p className="text-sm text-slate-500 text-center mt-2 max-w-lg mx-auto">A visual collection of our most recent works - each piece crafted with intention, emotion, and style.</p>
                 <div className="flex items-center gap-2 h-[400px] w-full max-w-7xl mt-10 mx-auto">

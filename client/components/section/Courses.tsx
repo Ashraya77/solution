@@ -1,15 +1,12 @@
 import React from 'react';
 
 import CourseCard from '../ui/CourseCard';
+import { courses } from '@/constants/navLinks';
 
 const Courses = () => {
   const lightBg = "bg-gray-50";
   
-  const courses = [
-    { title: "Advanced Excel & MIS", duration: "4 Weeks", level: "Beginner to Pro", price: "$99" },
-    { title: "Full Stack Web Dev", duration: "12 Weeks", level: "Career Path", price: "$299" },
-    { title: "Python for Data Science", duration: "8 Weeks", level: "Intermediate", price: "$149" },
-  ];
+  
 
   return (
     <section className={`${lightBg} py-16 px-6`}>
