@@ -47,11 +47,11 @@ const TrainingFeatures = () => {
           </p>
 
           {/* Premium Statistics Card */}
-          <div className="relative group p-1 rounded-3xl bg-gradient-to-br from-sky-500 to-indigo-600 shadow-2xl overflow-hidden transition-transform hover:scale-[1.02]">
+          <div className="relative group p-1 rounded-3xl bg-linear-to-br from-sky-500 to-indigo-600 shadow-2xl overflow-hidden transition-transform hover:scale-[1.02]">
             <div className="bg-white/95 backdrop-blur-sm p-8 rounded-[1.4rem]">
               <div className="flex items-center gap-4 mb-2">
                 <span className="text-4xl font-black text-sky-600 tracking-tighter">90%</span>
-                <div className="h-8 w-[1px] bg-slate-200"></div>
+                <div className="h-8 w-px bg-slate-200"></div>
                 <p className="text-sm font-bold text-slate-500 uppercase tracking-wide">Success Rate</p>
               </div>
               <p className="text-slate-700 font-medium">
@@ -65,7 +65,7 @@ const TrainingFeatures = () => {
           {features.map((f, i) => (
             <div 
               key={i} 
-              className={`${f.size} group relative p-8 bg-white border border-slate-100 rounded-[2rem] shadow-sm hover:shadow-xl hover:border-sky-100 transition-all duration-300`}
+              className={`${f.size} group relative p-8 bg-white border border-slate-100 rounded-4xl shadow-sm hover:shadow-xl hover:border-sky-100 transition-all duration-300`}
             >
               <div className="mb-6 w-14 h-14 rounded-2xl bg-sky-50 flex items-center justify-center  group-hover:text-white transition-colors duration-300">
                 {f.icon}

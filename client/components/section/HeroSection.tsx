@@ -30,7 +30,7 @@ export default function HeroSection() {
                     <div className="mt-12 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
                         <a
                             href="#courses"
-                            className="inline-flex items-center justify-center px-10 py-3.5 border border-transparent text-lg font-semibold rounded-full shadow-xl text-gray-900 bg-yellow-400 hover:bg-yellow-300 transition duration-300 transform hover:translate-y-[-2px]"
+                            className="inline-flex items-center justify-center px-10 py-3.5 border border-transparent text-lg font-semibold rounded-full shadow-xl text-gray-900 bg-yellow-400 hover:bg-yellow-300 transition duration-300 transform hover:translate-y-0.5"
                         >
                             View All Courses
                         </a>

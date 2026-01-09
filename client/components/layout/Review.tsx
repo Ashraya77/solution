@@ -44,8 +44,8 @@ export default function Review() {
       >
         {reviews.map((r) => (
           <SwiperSlide key={r.id}>
-            <div className="bg-stone-100 shadow-lg rounded-2xl p-6 text-center flex flex-col items-center min-h-[320px] justify-between">
-              <div className="flex-grow flex items-center">
+            <div className="bg-stone-100 shadow-lg rounded-2xl p-6 text-center flex flex-col items-center min-h-80 justify-between">
+              <div className="grow flex items-center">
                 <p className="text-gray-700 italic leading-relaxed">
                   “{r.review}”
                 </p>
