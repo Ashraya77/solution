@@ -22,7 +22,6 @@ const reviews = [
 export default function Review() {
   return (
     <motion.div 
-      // Changed fixed margins/padding to responsive Tailwind classes
       className="mt-20 mb-20 px-4 md:px-10 lg:px-20 max-w-7xl mx-auto overflow-hidden"
       initial={{ y: 120, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
