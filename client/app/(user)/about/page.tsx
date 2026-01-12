@@ -15,15 +15,15 @@ const ORGANIZATION_INFO = {
 
 export default function page() {
   interface FeaturePillarProps {
-  icon: React.ReactNode; // ReactNode allows strings, emojis, or JSX elements
+  icon: React.ReactNode; 
   title: string;
   description: string;
 }
-    // The defined color palette is dark blue, crisp white, and sky blue accents.
-    const darkBg = "bg-sky-600"; // Dark section background
-    const accentBlue = "text-yellow-400"; // Light blue for accent text/icons
-    const primaryBlue = "bg-yellow-400"; // Main button and highlight color
-    const textLight = "text-white"; // Light text on dark backgrounds
+   
+    const darkBg = "bg-sky-600"; 
+    const accentBlue = "text-yellow-400";
+    const primaryBlue = "bg-yellow-400"; 
+    const textLight = "text-white"; 
     
     // Component for reusable feature cards
     const FeaturePillar = ({ icon, title, description }: FeaturePillarProps) => (

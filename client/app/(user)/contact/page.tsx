@@ -1,7 +1,6 @@
 "use client"
 import React from 'react';
-// Assuming you have a component for handling the HTML head (like React Helmet or a custom solution)
-// import HeadMeta from './HeadMeta'; 
+
 
 // Organization Details
 const ORGANIZATION_INFO = {
@@ -9,27 +8,25 @@ const ORGANIZATION_INFO = {
     address: "123 Technology Ave, Tech City, TX 78701",
     phone: "+1 (555) 123-4567",
     email: "info@solutioncomputerhouse.com",
-    mapLink: "https://maps.app.goo.gl/example", // Replace with actual Google Maps link
+    mapLink: "https://maps.app.goo.gl/example", 
 };
 
-// --- Metadata for SEO and Social Sharing ---
 const ContactMetadata = {
     title: "Contact Us | Solution Computer House - Enrollment & Inquiries",
     description: "Ready to enroll in a computer course? Contact Solution Computer House for inquiries, course details, and scheduling a free consultation. Your path to certification starts here.",
     keywords: "computer courses contact, IT diploma inquiry, basic computer training support, Solution Computer House email",
     ogType: "website",
-    ogUrl: "https://www.yourdomain.com/contact", // Replace with actual URL
+    ogUrl: "https://www.yourdomain.com/contact", 
 };
 
 interface CourseItem {
   title: string;
   description: string;
   alignment: 'left' | 'right';
-  image?: string; // Optional if not all courses have an image
-  // Add any other properties your course object has (e.g. price, duration)
+  image?: string; 
+
 }
 
-// 2. Define the props for the CourseBlock component
 interface CourseBlockProps {
   course: CourseItem;
   index: number;

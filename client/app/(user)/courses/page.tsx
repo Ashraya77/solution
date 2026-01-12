@@ -52,7 +52,6 @@ export default function page() {
             icon: "📜",
             duration: "6-12 Months | Diploma Awarded",
             features: ["Tally & Financial Accounting", "Professional Graphic Design", "Data Entry & Analysis", "Advanced Spreadsheet Automation"],
-            // Using the path you provided
             imagePath: "/herosection.png",
             alignment: "right"
         },
@@ -88,13 +87,11 @@ export default function page() {
                             alt={`Visual representation of the ${course.title} course`}
                             className="w-full h-full object-cover transition duration-500 group-hover:opacity-90"
                             loading="lazy"
-                            // Added a background color for when the image is loading/missing, matching the primary color
                             style={{ backgroundColor: '#2563EB' }}
                         />
                     </div>
                 </div>
 
-                {/* Content Section (Left/Right depending on alignment) */}
                 <div className={`${isLeft ? 'lg:order-2' : 'lg:order-1'}`}>
 
                     <p className={`text-sm font-semibold tracking-widest uppercase mb-2 ${accentColor}`}>
@@ -127,7 +124,7 @@ export default function page() {
 
                     {/* Enroll CTA */}
                     <a
-                        href="/contact"
+                        href="/enroll"
                         className={`inline-block px-8 py-3 text-lg font-bold rounded-full shadow-lg ${accentBg} text-black transition duration-300 hover:bg-yellow-500 transform hover:translate-y-0.5`}
                     >
                         Inquire About This Course
