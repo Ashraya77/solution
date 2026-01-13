@@ -1,5 +1,6 @@
 import React from 'react';
 import { Play, Timer, TrendingUp, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 type CourseCardtypes = {
   title: string;
@@ -39,10 +40,10 @@ const CourseCard = ({ title, duration, level, price }: CourseCardtypes) => {
             </div>
           </div>
 
-          <button className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold flex items-center justify-center gap-2 group-hover:bg-sky-600 transition-all active:scale-[0.98]">
+          <Link href="/enroll" className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold flex items-center justify-center gap-2 group-hover:bg-sky-600 transition-all active:scale-[0.98]">
             Start Learning
             <ChevronRight size={18} className="opacity-50 group-hover:translate-x-1 transition-transform" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>

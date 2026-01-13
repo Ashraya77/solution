@@ -17,7 +17,7 @@ const Enroll = () => {
 
             {/* Main "Enroll Now" Button */}
             <a
-                href="/contact"
+                href="/enroll"
                 className={`inline-block px-12 py-5 text-xl font-bold rounded-full shadow-2xl text-gray-900 ${accentBg} hover:bg-yellow-500 transition duration-300 transform hover:scale-[1.08]`}
             >
                 Enroll Now
