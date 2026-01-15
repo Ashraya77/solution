@@ -8,7 +8,7 @@ export type Admin = {
 
 const admins: Admin[] = [
   {
-    userId:1,
+    userId: 1,
     username: 'john',
     password: 'pokhara',
   },
@@ -16,13 +16,7 @@ const admins: Admin[] = [
 
 @Injectable()
 export class AdminService {
-  async findAdmin(
-    username: string
-  ): Promise<Admin | undefined> {
-    return admins.find(
-      admin =>
-        admin.username === username
-       
-    );
+  findAdmin(username: string): Admin | undefined {
+    return admins.find((admin) => admin.username === username);
   }
 }
