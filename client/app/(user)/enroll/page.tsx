@@ -1,9 +1,10 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Loader2, Send } from 'lucide-react';
+import { Loader2, Send, CheckCircle2, XCircle } from 'lucide-react';
+import { createStudent } from '@/lib/apiClient';
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters"),
@@ -15,21 +16,54 @@ const formSchema = z.object({
   message: z.string().min(10, "Please tell us a bit more (min 10 chars)"),
 });
 
+type FormData = z.infer<typeof formSchema>;
+
 const Page = () => {
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async (data: any) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log("Enrollment Data:", data);
-    alert("Application submitted successfully!");
-    reset();
+  const onSubmit = async (data: FormData) => {
+    setSubmitStatus({ type: null, message: '' });
+
+    try {
+      const response = await createStudent(data);
+      
+      setSubmitStatus({
+        type: 'success',
+        message: response.message || 'Application submitted successfully!',
+      });
+      
+      reset();
+      
+      // Auto-hide success message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus({ type: null, message: '' });
+      }, 5000);
+      
+    } catch (error: any) {
+      console.error('Error submitting form:', error);
+      
+      const errorMessage = 
+        error.response?.data?.message || 
+        error.message || 
+        'Something went wrong. Please try again.';
+      
+      setSubmitStatus({
+        type: 'error',
+        message: errorMessage,
+      });
+    }
   };
 
   return (
@@ -38,6 +72,24 @@ const Page = () => {
         <h2 className="text-3xl font-black text-slate-900">Course Enrollment</h2>
         <p className="text-slate-500">Fill in your details to apply for admission.</p>
       </div>
+
+      {/* Success/Error Message */}
+      {submitStatus.type && (
+        <div
+          className={`mb-6 p-4 rounded-xl flex items-start gap-3 ${
+            submitStatus.type === 'success'
+              ? 'bg-green-50 text-green-800 border border-green-200'
+              : 'bg-red-50 text-red-800 border border-red-200'
+          }`}
+        >
+          {submitStatus.type === 'success' ? (
+            <CheckCircle2 className="w-5 h-5 mt-0.5 flex-shrink-0" />
+          ) : (
+            <XCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+          )}
+          <p className="text-sm font-medium">{submitStatus.message}</p>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         
