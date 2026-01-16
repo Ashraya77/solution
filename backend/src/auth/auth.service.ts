@@ -23,7 +23,7 @@ export class AuthService {
     if (!admin) throw new UnauthorizedException();
 
     console.log(admin.password);
-    const match = password == admin.password;
+    const match = password.trim() === admin.password.trim();
     console.log(match);
     if (!match) throw new UnauthorizedException();
 

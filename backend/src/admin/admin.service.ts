@@ -15,8 +15,4 @@ const admins: Admin[] = [
 ];
 
 @Injectable()
-export class AdminService {
-  findAdmin(username: string): Admin | undefined {
-    return admins.find((admin) => admin.username === username);
-  }
-}
+export class AdminService {}
