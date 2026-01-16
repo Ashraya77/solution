@@ -83,9 +83,9 @@ const Page = () => {
           }`}
         >
           {submitStatus.type === 'success' ? (
-            <CheckCircle2 className="w-5 h-5 mt-0.5 flex-shrink-0" />
+            <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0" />
           ) : (
-            <XCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+            <XCircle className="w-5 h-5 mt-0.5 shrink-0" />
           )}
           <p className="text-sm font-medium">{submitStatus.message}</p>
         </div>

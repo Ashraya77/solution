@@ -1,64 +1,36 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AdminService } from 'src/admin/admin.service';
+import { PrismaService } from 'prisma/prisma.service';
 
-type AuthInput = {
-    username: string;
-    password: string;
-}
-
-type SignInData = {
-    userId: number;
-    username: string;
-}
-
-type AuthResult = {
-    accessToken: string;
-    userId: number;
-    username: string;
-}
+type Admin = {
+  id: string;
+  email: string;
+  password: string;
+};
 
 @Injectable()
 export class AuthService {
-    constructor(private usersService: AdminService,
-        private jwtService: JwtService
-    ) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+  ) {}
 
-    async authenticate(input: AuthInput): Promise<AuthResult> {
-        const user = await this.validateUser(input)
+  async login(email: string, password: string) {
+    const admin: Admin | null = await this.prisma.admin.findUnique({
+      where: { email },
+    });
 
-        if (!user) {
-            throw new UnauthorizedException();
-        }
+    if (!admin) throw new UnauthorizedException();
 
-        return this.signIn(user)
-    }
+    console.log(admin.password);
+    const match = password == admin.password;
+    console.log(match);
+    if (!match) throw new UnauthorizedException();
 
+    const payload = { sub: admin.id };
 
-    async validateUser(input: AuthInput): Promise<SignInData | null> {
-        const user = await this.usersService.findAdmin(input.username)
-
-        if (user && user.password === input.password) {
-            return {
-                userId: user.userId,
-                username: user.username
-            }
-        }
-
-        return null
-    }
-    
-    async signIn(user: SignInData): Promise<AuthResult>{
-        const tokenPayload = {
-            sub: user.userId,
-            username: user.username
-        };
-        const accessToken = await this.jwtService.signAsync(tokenPayload);
-
-        return{
-            accessToken, username: user.username, userId: user.userId
-        };
-    }
-
-
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
 }
