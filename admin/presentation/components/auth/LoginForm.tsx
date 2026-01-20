@@ -2,12 +2,14 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { useSearchParams } from 'next/navigation'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState('');
-
+  const searchParams = useSearchParams()
+  const error = searchParams.get('error')
   const {
     register,
     handleSubmit,
@@ -25,7 +27,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/auth/login', {
+      const response = await fetch('http://localhost:5000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,6 +63,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+        
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-full mb-4">
@@ -95,7 +98,7 @@ export default function LoginPage() {
                     message: 'Invalid email address',
                   },
                 })}
-                className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition ${
+                className={`text-gray-700 block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition ${
                   errors.email ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="you@example.com"
@@ -124,7 +127,7 @@ export default function LoginPage() {
                     message: 'Password must be at least 6 characters',
                   },
                 })}
-                className={`block w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition ${
+                className={`block w-full pl-10 pr-12 py-3 border rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition ${
                   errors.password ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="••••••••"

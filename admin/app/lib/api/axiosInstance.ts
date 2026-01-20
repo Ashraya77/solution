@@ -2,12 +2,13 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-  timeout: 10000,
+  baseURL: process.env.NEXT_PUBLIC_API_URL, // NestJS API
+  withCredentials: true, // 🔥 REQUIRED for httpOnly cookies
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
 
 // Request interceptor
 axiosInstance.interceptors.request.use(
