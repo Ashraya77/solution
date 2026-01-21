@@ -31,7 +31,7 @@ export default function Navbar() {
         {/* Hamburger button */}
         <button 
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-white hover:text-yellow-300 focus:outline-none"
+          className="md:hidden  text-black hover:text-yellow-300 focus:outline-none"
         >
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             {isOpen ? (

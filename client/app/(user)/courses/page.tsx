@@ -1,168 +1,135 @@
 "use client"
 import React from 'react';
+import { BookOpen, Rocket, Award, CheckCircle2, ArrowRight } from 'lucide-react';
 
-// --- Solution Computer House Details ---
-const ORGANIZATION_INFO = {
-    name: "Solution Computer House",
-    address: "Pokhara-25, Hemja, Gandaki Province, Nepal",
-};
-// -------------------------------------
+// --- Data Structure ---
+const COURSES = [
+    {
+        id: 1,
+        title: "Basic Computer Skills",
+        level: "Foundational (Level 01)",
+        description: "The essential starting point. Master the foundational software (Office Suite), system maintenance, and digital communication skills necessary for everyday professional life.",
+        icon: <BookOpen className="w-6 h-6" />,
+        duration: "2 Months | Certification",
+        features: ["Microsoft Office Mastery", "Professional Typing Speed", "Digital File Management", "Email & Internet Security"],
+        imagePath: "/herosection.png",
+    },
+    {
+        id: 2,
+        title: "MERN Stack & React",
+        level: "Advanced (Level 03)",
+        description: "Become a Full-Stack expert. This intense program focuses on building real-world applications using MongoDB, Express, React, and Node.js.",
+        icon: <Rocket className="w-6 h-6" />,
+        duration: "4-6 Months | Portfolio Built",
+        features: ["React Component Architecture", "API Design with Node.js", "MongoDB NoSQL Database", "Version Control (Git)"],
+        imagePath: "/herosection.png",
+    },
+    {
+        id: 3,
+        title: "Computer Diploma Programs",
+        level: "Intermediate (Level 02)",
+        description: "Specialized, comprehensive training for specific career paths. Includes in-depth courses in Accounting (Tally) and Graphic Design.",
+        icon: <Award className="w-6 h-6" />,
+        duration: "6-12 Months | Diploma Awarded",
+        features: ["Tally & Financial Accounting", "Professional Graphic Design", "Data Entry & Analysis", "Advanced Spreadsheets"],
+        imagePath: "/herosection.png",
+    },
+];
 
-
-export default function page() {
-
-    // Defined Tailwind Colors
-    const primaryColor = "text-sky-600";
-    const primaryBg = "bg-sky-600";
-    const accentColor = "text-yellow-400";
-    const accentBg = "bg-yellow-400";
-    const lightBg = "bg-gray-50";
-
-    // --- Course Data for the Showcase Section ---
-    const COURSES = [
-        {
-            id: 1,
-            title: "Basic Computer Skills",
-            level: "Foundational (Level 01)",
-            description: "The essential starting point. Master the foundational software (Office Suite), system maintenance, and digital communication skills necessary for everyday professional life. Perfect for beginners and those seeking certification.",
-            icon: "📚",
-            duration: "2 Months | Certification Available",
-            features: ["Microsoft Office Mastery", "Professional Typing Speed", "Digital File Management", "Email & Internet Security"],
-            // Updated to a placeholder image path
-            imagePath: "/herosection.png",
-            alignment: "right"
-        },
-        {
-            id: 2,
-            title: "MERN Stack & React Development",
-            level: "Advanced (Level 03)",
-            description: "Become a Full-Stack expert. This intense program focuses on building real-world applications using MongoDB, Express, React, and Node.js. Designed to turn ambitious students into job-ready web developers.",
-            icon: "🚀",
-            duration: "4-6 Months | Project Portfolio Built",
-            features: ["React Component Architecture", "API Design with Node.js", "MongoDB NoSQL Database", "Version Control (Git)"],
-            // Updated to a placeholder image path
-            imagePath: "/herosection.png",
-            alignment: "left"
-        },
-        {
-            id: 3,
-            title: "Computer Diploma Programs",
-            level: "Intermediate (Level 02)",
-            description: "Specialized, comprehensive training for specific career paths. Includes in-depth courses in Accounting (Tally), Graphic Design principles (Adobe Suite), and Advanced Data Management.",
-            icon: "📜",
-            duration: "6-12 Months | Diploma Awarded",
-            features: ["Tally & Financial Accounting", "Professional Graphic Design", "Data Entry & Analysis", "Advanced Spreadsheet Automation"],
-            imagePath: "/herosection.png",
-            alignment: "right"
-        },
-    ];
-    type Course = {
-        id: number;
-        title: string;
-        level: string;
-        description: string;
-        icon: string;
-        duration: string;
-        features: string[];
-        imagePath: string;
-        alignment: string;
-    };
-
-    interface CourseBlockProps {
-        course: Course;
-        index: number;
-    }
-    const CourseBlock = ({ course, index }: CourseBlockProps) => {
-        const isLeft = course.alignment === 'left';
-
-        return (
-            <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-16 px-6 lg:px-0 border-b border-gray-200 ${isLeft ? 'lg:pr-12' : 'lg:pl-12'}`}>
-
-                {/* Image Section */}
-                <div className={`p-6 rounded-xl shadow-2xl ${primaryBg} ${isLeft ? 'lg:order-1' : 'lg:order-2'} transition duration-500 hover:scale-[1.01] hover:shadow-sky-500/50`}>
-                    <div className="aspect-video relative rounded-lg overflow-hidden">
-                       
-                        <img
-                            src={course.imagePath}
-                            alt={`Visual representation of the ${course.title} course`}
-                            className="w-full h-full object-cover transition duration-500 group-hover:opacity-90"
-                            loading="lazy"
-                            style={{ backgroundColor: '#2563EB' }}
-                        />
-                    </div>
-                </div>
-
-                <div className={`${isLeft ? 'lg:order-2' : 'lg:order-1'}`}>
-
-                    <p className={`text-sm font-semibold tracking-widest uppercase mb-2 ${accentColor}`}>
-                        {course.level}
-                    </p>
-                    <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
-                        {course.title}
-                    </h2>
-
-                    <p className="text-xl text-gray-600 mb-6 leading-relaxed">
-                        {course.description}
-                    </p>
-
-                    <div className="mb-6">
-                        <span className={`px-4 py-1 text-sm font-semibold rounded-full bg-sky-600 text-white-900`}>
-                            {course.duration}
-                        </span>
-                    </div>
-
-                    <ul className="grid grid-cols-2 gap-x-6 gap-y-3 mb-8">
-                        {course.features.map((feature, i) => (
-                            <li key={i} className="flex items-center text-gray-700 font-medium">
-                                <span className={`mr-2 ${primaryColor} shrink-0`}>
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                </span>
-                                {feature}
-                            </li>
-                        ))}
-                    </ul>
-
-                    {/* Enroll CTA */}
-                    <a
-                        href="/enroll"
-                        className={`inline-block px-8 py-3 text-lg font-bold rounded-full shadow-lg ${accentBg} text-black transition duration-300 hover:bg-yellow-500 transform hover:translate-y-0.5`}
-                    >
-                        Inquire About This Course
-                    </a>
-                </div>
-            </div>
-        );
-    };
-
+export default function CoursePage() {
     return (
-        <div className={`min-h-screen font-sans ${lightBg}`}>
-
-            {/* 1. HEADER SECTION: Dynamic, full-bleed intro */}
-            <header className={`${primaryBg} pt-24 pb-20 shadow-2xl`}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <p className={`text-xl font-semibold ${accentColor} tracking-widest uppercase`}>
+        <div className="min-h-screen bg-gray-50 font-sans">
+            
+            {/* 1. HEADER SECTION - Kept your original Sky Blue theme */}
+            <header className="bg-sky-600 pt-24 pb-20 shadow-xl relative overflow-hidden">
+                {/* Subtle decorative circle to add depth to the flat blue */}
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-sky-500 rounded-full opacity-50 blur-3xl" />
+                
+                <div className="relative max-w-7xl mx-auto px-6 text-center">
+                    <p className="text-yellow-400 font-bold tracking-widest uppercase mb-3">
                         Course Catalog | Solution Computer House
                     </p>
-                    <h1 className="mt-2 text-5xl md:text-7xl font-extrabold text-white">
+                    <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6">
                         Master the Skills of Tomorrow.
                     </h1>
-                    <p className="mt-4 text-lg text-sky-100 max-w-3xl mx-auto">
-                        Explore our highly specialized programs—from foundational literacy to advanced MERN stack development—all taught locally in Hemja, Pokhara.
+                    <p className="text-sky-100 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+                        Explore our highly specialized programs—from foundational literacy to advanced development—all taught locally in Hemja, Pokhara.
                     </p>
                 </div>
             </header>
 
-            {/* 2. COURSE SHOWCASE: Dynamic Asymmetrical Grid */}
-            <section className="py-10 sm:py-16">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* 2. COURSE SHOWCASE */}
+            <section className="max-w-7xl mx-auto px-6 py-12">
+                {COURSES.map((course, index) => (
+                    <div 
+                        key={course.id} 
+                        className={`flex flex-col lg:flex-row items-center gap-12 py-16 border-b border-gray-200 last:border-0 ${
+                            index % 2 !== 0 ? 'lg:flex-row-reverse' : ''
+                        }`}
+                    >
+                        {/* Image Section */}
+                        <div className="w-full lg:w-1/2 group">
+                            <div className="relative p-4 bg-white rounded-2xl shadow-xl transition-transform duration-500 group-hover:scale-[1.02]">
+                                <div className="aspect-video relative rounded-lg overflow-hidden bg-sky-100">
+                                    <img
+                                        src={course.imagePath}
+                                        alt={course.title}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    {/* Duration Badge overlay */}
+                                    <div className="absolute bottom-4 left-4 bg-sky-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-lg">
+                                        {course.duration}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    {COURSES.map((course, index) => (
-                        <CourseBlock key={course.id} course={course} index={index} />
-                    ))}
-                </div>
+                        {/* Text Section */}
+                        <div className="w-full lg:w-1/2 space-y-6">
+                            <div>
+                                <span className="text-yellow-600 font-bold tracking-tighter uppercase text-sm">
+                                    {course.level}
+                                </span>
+                                <h2 className="text-4xl font-black text-gray-900 mt-1">
+                                    {course.title}
+                                </h2>
+                            </div>
+
+                            <p className="text-gray-600 text-lg leading-relaxed">
+                                {course.description}
+                            </p>
+
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {course.features.map((feature, i) => (
+                                    <li key={i} className="flex items-center text-gray-700">
+                                        <CheckCircle2 className="w-5 h-5 text-sky-600 mr-2 shrink-0" />
+                                        <span className="font-medium text-sm">{feature}</span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <div className="pt-4">
+                                <a
+                                    href="/enroll"
+                                    className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded-xl shadow-lg transition-all transform hover:-translate-y-1 active:scale-95"
+                                >
+                                    Inquire About This Course
+                                    <ArrowRight className="w-5 h-5" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                ))}
             </section>
 
-
+            {/* 3. FOOTER ADDRESS */}
+            <footer className="bg-white py-12 border-t border-gray-100">
+                <div className="max-w-7xl mx-auto px-6 text-center">
+                    <p className="text-gray-500 font-medium">
+                        Pokhara-25, Hemja, Gandaki Province, Nepal
+                    </p>
+                </div>
+            </footer>
         </div>
     );
 }
