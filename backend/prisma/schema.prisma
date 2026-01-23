@@ -22,9 +22,16 @@ model Student {
   course    String
   address   String
   message   String
+  enrollDate  String
+
+  totalFee    Float    @default(0)
+  amountPaid  Float    @default(0)
+  amountDue   Float    @default(0)
+  paymentStatus String @default("unpaid")
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  
   @@map("students")
 }
 

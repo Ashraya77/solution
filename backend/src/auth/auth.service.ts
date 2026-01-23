@@ -34,7 +34,8 @@ export class AuthService {
     response.cookie('access_token', access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Only HTTPS in production
-      sameSite: 'strict', // or 'lax' if you need cross-site requests
+      sameSite: 'lax', // or 'lax' if you need cross-site requests
+      path: '/',
       maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
     });
 
@@ -44,7 +45,7 @@ export class AuthService {
   }
 
   async logout(response: Response) {
-    response.clearCookie('access_token');
+response.clearCookie('access_token', { path: '/' });
     return { message: 'Logout successful' };
   }
 }

@@ -3,7 +3,6 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Controller('admin')
 export class AdminController {
-
   @Get('dashboard')
   @UseGuards(AuthGuard('jwt'))
   getDashboard(@Req() req) {
