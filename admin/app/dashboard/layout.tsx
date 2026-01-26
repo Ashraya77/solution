@@ -9,7 +9,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r hidden md:flex flex-col">
         <div className="p-6">
-          <h1 className="text-xl font-bold text-blue-600">CourseAdmin</h1>
+          <h1 className="text-xl font-bold text-blue-600">Admin Panel</h1>
         </div>
         <nav className="flex-1 px-4 space-y-2">
           <Link href="/dashboard" className="flex items-center p-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
@@ -35,7 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         <header className="h-16 bg-white border-b flex items-center justify-between px-8">
-          <h2 className="font-semibold text-gray-800">Admin Control Panel</h2>
+          <h2 className="font-semibold text-gray-800">SOLUTION COMPUTER HOUSE</h2>
           <div className="flex items-center gap-4">
             <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm">A</div>
           </div>

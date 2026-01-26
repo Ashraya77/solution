@@ -20,7 +20,6 @@ export const studentsAPI = {
 
     const payload = response.data;
 
-    // 🧠 Normalize all possible backend responses
     if (Array.isArray(payload?.data)) {
       return payload.data; // ideal backend
     }

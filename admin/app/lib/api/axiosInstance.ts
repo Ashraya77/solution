@@ -2,21 +2,22 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL, // NestJS API
-  withCredentials: true, // 🔥 REQUIRED for httpOnly cookies
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Add auth token if available
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Only access localStorage in browser (client-side)
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
@@ -31,9 +32,7 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    // Handle errors globally
-    if (error.response?.status === 401) {
-      // Handle unauthorized (e.g., redirect to login)
+    if (typeof window !== 'undefined' && error.response?.status === 401) {
       localStorage.removeItem('token');
       window.location.href = '/login';
     }
