@@ -22,7 +22,7 @@ model Student {
   course    String
   address   String
   message   String
-  enrollDate  String
+  enrollDate  String @default("")
 
   totalFee    Float    @default(0)
   amountPaid  Float    @default(0)

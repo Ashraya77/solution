@@ -7,6 +7,7 @@ export class AdminController {
   @UseGuards(AuthGuard('jwt'))
   getDashboard(@Req() req) {
     // req.user contains what `validate()` returned in JwtStrategy
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     return { message: 'Welcome admin!', adminId: req.user.adminId };
   }
 }

@@ -6,13 +6,5 @@ export type Admin = {
   password: string;
 };
 
-const admins: Admin[] = [
-  {
-    userId: 1,
-    username: 'john',
-    password: 'pokhara',
-  },
-];
-
 @Injectable()
 export class AdminService {}
