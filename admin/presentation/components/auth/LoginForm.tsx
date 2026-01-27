@@ -1,38 +1,40 @@
-"use client"
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { useSearchParams } from 'next/navigation'
+"use client";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [apiError, setApiError] = useState('');
-  const searchParams = useSearchParams()
-  const error = searchParams.get('error')
+  const [apiError, setApiError] = useState("");
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       rememberMe: false,
     },
   });
+  const router = useRouter();
 
   const onSubmit = async (data) => {
-    setApiError('');
+    setApiError("");
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/auth/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include', 
+        credentials: "include",
         body: JSON.stringify({
           email: data.email,
           password: data.password,
@@ -42,20 +44,14 @@ export default function LoginPage() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || 'Invalid credentials');
+        throw new Error(result.message || "Invalid credentials");
       }
-      
-      // Optional: Store email for "remember me"
-      if (data.rememberMe) {
-        localStorage.setItem('rememberedEmail', data.email);
-      } else {
-        localStorage.removeItem('rememberedEmail');
-      }
-      
+      console.log("logged in");
       // Redirect to dashboard
-      window.location.href = '/dashboard';
+      router.push("/dashboard");
+      router.refresh();
     } catch (err) {
-      setApiError(err.message || 'Invalid email or password');
+      setApiError(err.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -63,7 +59,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-        
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-full mb-4">
@@ -81,7 +76,10 @@ export default function LoginPage() {
 
         <div className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Email Address
             </label>
             <div className="relative">
@@ -91,26 +89,31 @@ export default function LoginPage() {
               <input
                 id="email"
                 type="email"
-                {...register('email', {
-                  required: 'Email is required',
+                {...register("email", {
+                  required: "Email is required",
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Invalid email address',
+                    message: "Invalid email address",
                   },
                 })}
                 className={`text-gray-700 block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition ${
-                  errors.email ? 'border-red-500' : 'border-gray-300'
+                  errors.email ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="you@example.com"
               />
             </div>
             {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Password
             </label>
             <div className="relative">
@@ -119,16 +122,16 @@ export default function LoginPage() {
               </div>
               <input
                 id="password"
-                type={showPassword ? 'text' : 'password'}
-                {...register('password', {
-                  required: 'Password is required',
+                type={showPassword ? "text" : "password"}
+                {...register("password", {
+                  required: "Password is required",
                   minLength: {
                     value: 6,
-                    message: 'Password must be at least 6 characters',
+                    message: "Password must be at least 6 characters",
                   },
                 })}
                 className={`block w-full pl-10 pr-12 py-3 border rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition ${
-                  errors.password ? 'border-red-500' : 'border-gray-300'
+                  errors.password ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="••••••••"
               />
@@ -145,7 +148,9 @@ export default function LoginPage() {
               </button>
             </div>
             {errors.password && (
-              <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
@@ -153,12 +158,15 @@ export default function LoginPage() {
             <label className="flex items-center">
               <input
                 type="checkbox"
-                {...register('rememberMe')}
+                {...register("rememberMe")}
                 className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
               />
               <span className="ml-2 text-sm text-gray-600">Remember me</span>
             </label>
-            <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+            <a
+              href="#"
+              className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+            >
               Forgot password?
             </a>
           </div>
@@ -168,14 +176,17 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </div>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
-            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+            Don't have an account?{" "}
+            <a
+              href="#"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
               Sign up
             </a>
           </p>

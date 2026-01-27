@@ -44,8 +44,8 @@ export class AuthService {
     };
   }
 
-  async logout(response: Response) {
-response.clearCookie('access_token', { path: '/' });
+  logout(response: Response) {
+    response.clearCookie('access_token', { path: '/' });
     return { message: 'Logout successful' };
   }
 }
