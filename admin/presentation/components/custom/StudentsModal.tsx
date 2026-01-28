@@ -25,7 +25,7 @@ export default function StudentModal({ student, isOpen, onClose, onDelete, onEdi
       >
         <div className="flex justify-between items-start mb-4">
           <h3 className="text-2xl font-bold text-black">{student.fullName}</h3>
-          <button y
+          <button 
             onClick={onClose}
             className="text-black hover:text-gray-700 text-2xl"
           >
