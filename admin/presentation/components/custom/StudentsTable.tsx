@@ -2,29 +2,27 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getStudents, deleteStudent } from "@/app/lib/services/GetStudents";
+import {
+  createStudent,
+  getStudents,
+  deleteStudent,
+  type CreateStudentInput,
+} from "@/app/lib/services/GetStudents";
 import StudentModal from "./StudentsModal";
+import AddStudentModal from "./AddStudentModal";
+import type { Student } from "@/types/Student";
 
-interface Student {
-  id: number;
-  fullName: string;
-  email: string;
-  phone: string;
-  course: string;
-  address: string;
-  totalFee: number;
-  amountPaid: number;
-  amountDue: number;
-  paymentStatus: "paid" | "partial" | "unpaid";
-  enrollDate: string;
-}
+const getErrorMessage = (error: unknown) => {
+  return error instanceof Error ? error.message : "Something went wrong";
+};
 
 export default function StudentsTable() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
     fetchStudents();
@@ -36,14 +34,14 @@ export default function StudentsTable() {
     try {
       const result = await getStudents();
       setStudents(result.data);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
   };
  
-   const closeModal = () => {
+  const closeModal = () => {
     setIsModalOpen(false);
     setSelectedStudent(null);
   };
@@ -53,18 +51,24 @@ export default function StudentsTable() {
     setIsModalOpen(true);
   };
 
-  const handleEdit = (student: Student) => {
+  const handleEdit = () => {
     alert("Edit functionality coming soon");
     // You can implement edit logic here
   };
+
+  const handleCreateStudent = async (studentData: CreateStudentInput) => {
+    const result = await createStudent(studentData);
+    setStudents((currentStudents) => [...currentStudents, result.data]);
+  };
+
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this student?")) return;
 
     try {
       await deleteStudent(id);
       setStudents(students.filter((s) => s.id !== id));
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err) {
+      alert(getErrorMessage(err));
     }
   };
 
@@ -80,7 +84,10 @@ export default function StudentsTable() {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-black">Students</h2>
-        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          onClick={() => setIsAddModalOpen(true)}
+        >
           Add Student +
         </button>
       </div>
@@ -122,13 +129,13 @@ export default function StudentsTable() {
           <tbody className="divide-y divide-gray-200">
             {students.length === 0 ? (
               <tr>
-                <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
+                <td colSpan={9} className="px-6 py-4 text-center text-gray-500">
                   No students found
                 </td>
               </tr>
             ) : (
               students.map((student) => (
-                <tr key={student.id} className="hover:bg-gray-50 text-gray-800" onClick={()=> handleStudentClick(student)}>
+                <tr key={student.id} className="hover:bg-gray-50 text-gray-800" onClick={() => handleStudentClick(student)}>
                   <td className="px-6 py-4 whitespace-nowrap">{student.id}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {student.fullName}
@@ -164,13 +171,19 @@ export default function StudentsTable() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button
                       className="text-blue-600 hover:text-blue-800 mr-3"
-                      onClick={() => alert("Edit functionality coming soon")}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleEdit();
+                      }}
                     >
                       Edit
                     </button>
                     <button
                       className="text-red-600 hover:text-red-800"
-                      onClick={() => handleDelete(student.id)}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleDelete(student.id);
+                      }}
                     >
                       Delete
                     </button>
@@ -188,6 +201,12 @@ export default function StudentsTable() {
         onClose={closeModal}
         onDelete={handleDelete}
         onEdit={handleEdit}
+      />
+
+      <AddStudentModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSubmit={handleCreateStudent}
       />
     </div>
   );

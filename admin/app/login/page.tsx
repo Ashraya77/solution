@@ -1,9 +1,14 @@
 import LoginForm from '@/presentation/components/auth/LoginForm'
 import React from 'react'
+import { Suspense } from 'react'
 
 const page = () => {
   return (
-    <div><LoginForm/></div>
+    <div>
+      <Suspense fallback={null}>
+        <LoginForm/>
+      </Suspense>
+    </div>
   )
 }
 

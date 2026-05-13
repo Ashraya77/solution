@@ -4,6 +4,17 @@ import { useForm } from "react-hook-form";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { LoginService } from "@/app/lib/services/LoginService";
+
+type LoginFormValues = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
+
+const getErrorMessage = (error: unknown) => {
+  return error instanceof Error ? error.message : "Invalid email or password";
+};
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +22,7 @@ export default function LoginPage() {
   const [apiError, setApiError] = useState("");
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
+  const displayError = apiError || error;
   const {
     register,
     handleSubmit,
@@ -24,34 +36,37 @@ export default function LoginPage() {
   });
   const router = useRouter();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: LoginFormValues) => {
     setApiError("");
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
-      });
+      await LoginService(data.email, data.password);
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "Invalid credentials");
-      }
+      // Backend login disabled while the API is being rebuilt.
+      // const response = await fetch("http://localhost:5000/auth/login", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   credentials: "include",
+      //   body: JSON.stringify({
+      //     email: data.email,
+      //     password: data.password,
+      //   }),
+      // });
+      //
+      // const result = await response.json();
+      //
+      // if (!response.ok) {
+      //   throw new Error(result.message || "Invalid credentials");
+      // }
       console.log("logged in");
       // Redirect to dashboard
       router.push("/dashboard");
       router.refresh();
     } catch (err) {
-      setApiError(err.message || "Invalid email or password");
+      setApiError(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -68,9 +83,9 @@ export default function LoginPage() {
           <p className="text-gray-600 mt-2">Sign in to your account</p>
         </div>
 
-        {apiError && (
+        {displayError && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-800 text-sm">{apiError}</p>
+            <p className="text-red-800 text-sm">{displayError}</p>
           </div>
         )}
 
@@ -182,7 +197,7 @@ export default function LoginPage() {
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <a
               href="#"
               className="font-medium text-indigo-600 hover:text-indigo-500"
