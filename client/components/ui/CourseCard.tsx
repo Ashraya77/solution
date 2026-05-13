@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Timer, TrendingUp, ChevronRight } from 'lucide-react';
-import { motion } from "framer-motion"; // Changed from motion/react for standard compatibility
+import { motion, type Variants } from "framer-motion"; // Changed from motion/react for standard compatibility
 import Link from 'next/link';
 
 type CourseCardtypes = {
@@ -13,7 +13,7 @@ type CourseCardtypes = {
 }
 
 // 1. Define the animation variants for the individual card
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { 
     opacity: 0, 
     y: 20,

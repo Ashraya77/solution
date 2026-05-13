@@ -38,7 +38,7 @@ export default function page() {
         <div className="min-h-screen font-sans bg-white">
             
             {/* 1. HERO SECTION: High-Contrast Introduction */}
-            <header className={`py-24 md:py-32 ${darkBg} text-white`}>
+            <header className={`py-24 md:py-32 ${darkBg} text-white `}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="lg:w-3/4">
                         <p className={`text-xl font-medium ${accentBlue} tracking-wider uppercase mb-4`}>

@@ -1,14 +1,15 @@
 "use client";
 
 import React from 'react';
-import { motion } from "framer-motion"; // Note: standard import is usually "framer-motion"
+import { motion, type Variants } from "framer-motion"; // Note: standard import is usually "framer-motion"
 import Image from 'next/image';
 
 export default function HeroSection() {
     const heroImagePath = '/herosection1.png';
+    const smoothEase: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
     // Animation variants for cleaner code and staggered effects
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -19,14 +20,14 @@ export default function HeroSection() {
         },
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { opacity: 0, y: 30 },
         visible: {
             opacity: 1,
             y: 0,
             transition: {
                 duration: 0.8,
-                ease: [0.16, 1, 0.3, 1], // Custom cubic-bezier for a smooth "out-out" feel
+                ease: smoothEase, // Custom cubic-bezier for a smooth "out-out" feel
             },
         },
     };
@@ -38,7 +39,7 @@ export default function HeroSection() {
                 initial={{ opacity: 0, scale: 1.1 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
-                className="absolute md:left-50 md:top-20 z-0 md:w-400 md:h-full">
+               className="absolute inset-0 z-0">
                 <Image
                     src={heroImagePath}
                     alt="Hero Background"
