@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import { motion } from 'framer-motion';
 import { UserCheck, Code, Briefcase, Award, ArrowUpRight } from 'lucide-react';
 
 const TrainingFeatures = () => {
@@ -61,11 +64,32 @@ const TrainingFeatures = () => {
           </div>
         </div>
         
-        <div className="lg:w-7/12 grid grid-cols-2 gap-4">
+        <motion.div
+          className="lg:w-7/12 grid grid-cols-2 gap-4"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.42,
+              },
+            },
+          }}
+        >
           {features.map((f, i) => (
-            <div 
+            <motion.div
               key={i} 
               className={`${f.size} group relative p-8 bg-white border border-slate-100 rounded-4xl shadow-sm hover:shadow-xl hover:border-sky-100 transition-all duration-300`}
+              variants={{
+                hidden: { opacity: 0, y: 18 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: 'easeOut' },
+                },
+              }}
             >
               <div className="mb-6 w-14 h-14 rounded-2xl bg-sky-50 flex items-center justify-center  group-hover:text-white transition-colors duration-300">
                 {f.icon}
@@ -81,10 +105,20 @@ const TrainingFeatures = () => {
               <span className="absolute bottom-6 right-8 text-5xl font-black text-slate-50 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
                 0{i + 1}
               </span>
-            </div>
+            </motion.div>
           ))}
           
-          <div className="col-span-2 mt-2 flex items-center justify-between p-6 bg-slate-900 rounded-3xl text-white">
+          <motion.div
+            className="col-span-2 mt-2 flex items-center justify-between p-6 bg-slate-900 rounded-3xl text-white"
+            variants={{
+              hidden: { opacity: 0, y: 18 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.8, ease: 'easeOut' },
+              },
+            }}
+          >
             <div className="flex items-center gap-4">
                <div className="p-3 bg-white/10 rounded-xl">
                  <Award className="text-yellow-400" />
@@ -94,8 +128,8 @@ const TrainingFeatures = () => {
             <button className="px-6 py-2 bg-sky-500 hover:bg-sky-400 rounded-full text-sm font-black transition-colors">
               VIEW SAMPLE
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

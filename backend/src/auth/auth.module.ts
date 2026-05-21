@@ -5,15 +5,14 @@ import { AdminModule } from 'src/admin/admin.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JWT_SECRET } from './config/jwt-secret';
 import { JwtStrategy } from './jwt.strategy';
-import { ConfigService } from '@nestjs/config';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, ConfigService],
+  providers: [AuthService, JwtStrategy],
   imports: [
     AdminModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      secret: process.env.JWT_SECRET ?? JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
   ],
