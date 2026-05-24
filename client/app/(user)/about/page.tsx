@@ -1,160 +1,297 @@
-"use client"
-import React from 'react';
+"use client";
 
+import { motion, type Variants } from "framer-motion";
+import { ArrowRight, BookOpenCheck, MapPin, MonitorCheck, Users } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import type { ReactNode } from "react";
 
-// --- Solution Computer House Details ---
-const ORGANIZATION_INFO = {
-    name: "Solution Computer House",
-    address: "Pokhara-25, Hemja, Gandaki Province, Nepal", 
-    phone: "+977 (XX) XXX-XXXX", 
-    email: "info@solutioncomputerhouse.com",
-    mapLink: "https://maps.app.goo.gl/YourActualMapLinkHere", 
+const organization = {
+  name: "Solution Computer House",
+  address: "Pokhara-25, Hemja, Gandaki Province, Nepal",
+  phone: "+977 (XX) XXX-XXXX",
+  email: "info@solutioncomputerhouse.com",
+  mapLink: "https://maps.app.goo.gl/YourActualMapLinkHere",
 };
-// -------------------------------------
 
+type Owner = {
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+  imageAlt: string;
+  objectPosition: string;
+};
 
-export default function page() {
-  interface FeaturePillarProps {
-  icon: React.ReactNode; 
+const owners: Owner[] = [
+  {
+    name: "Owner Name",
+    role: "Founder & Academic Director",
+    bio: "Leads the academic direction of the institute, with a focus on practical course structure, student guidance, and consistent learning outcomes.",
+    image:
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=700&q=85",
+    imageAlt: "Portrait placeholder for institution owner",
+    objectPosition: "object-[50%_35%]",
+  },
+  {
+    name: "Owner Name",
+    role: "Managing Director",
+    bio: "Oversees operations, student support, partnerships, and the day-to-day systems that keep training focused and professionally delivered.",
+    image:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=85",
+    imageAlt: "Portrait placeholder for institution owner",
+    objectPosition: "object-[50%_35%]",
+  },
+];
+
+type Value = {
   title: string;
   description: string;
-}
-   
-    const darkBg = "bg-sky-600"; 
-    const accentBlue = "text-yellow-400";
-    const primaryBlue = "bg-yellow-400"; 
-    const textLight = "text-white"; 
-    
-    // Component for reusable feature cards
-    const FeaturePillar = ({ icon, title, description }: FeaturePillarProps) => (
-        <div className="p-8 bg-white/5 rounded-2xl border border-sky-600/20 backdrop-blur-sm transition duration-300 hover:border-sky-400/50 hover:shadow-xl">
-            <span className={`text-5xl mb-4 inline-block ${accentBlue}`}>{icon}</span>
-            <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
-            <p className="text-gray-300 leading-relaxed">{description}</p>
-        </div>
-    );
+  icon: ReactNode;
+};
 
-    return (
-        <div className="min-h-screen font-sans bg-white">
-            
-            {/* 1. HERO SECTION: High-Contrast Introduction */}
-            <header className={`py-24 md:py-32 ${darkBg} text-white `}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="lg:w-3/4">
-                        <p className={`text-xl font-medium ${accentBlue} tracking-wider uppercase mb-4`}>
-                            About Solution Computer House
-                        </p>
-                        <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight leading-snug">
-                            Empowering the Future of Tech in <span className="text-yellow-400">Pokhara.</span>
-                        </h1>
-                        <p className="mt-8 text-2xl text-white max-w-4xl">
-                            We are the premier institution for digital education in Hemja, Pokhara, committed to transforming local talent into global professionals through specialized training.
-                        </p>
-                        <a 
-                            href="/contact" 
-                            className={`mt-10 inline-block px-10 py-4 text-lg font-bold rounded-full shadow-lg ${primaryBlue} text-black transition duration-300 hover:bg-yellow-500 transform hover:scale-[1.03]`}
-                        >
-                            Explore Our Courses →
-                        </a>
-                    </div>
-                </div>
-            </header>
-            
-            {/* 2. CORE NARRATIVE SECTION: White Background for Readability */}
-            <section className="py-20 sm:py-32 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid lg:grid-cols-2 gap-16 items-start">
-                        
-                        {/* Mission & Philosophy */}
-                        <div>
-                            <h2 className={`text-base font-semibold ${accentBlue} uppercase mb-3`}>Our Philosophy</h2>
-                            <h3 className="text-4xl font-extrabold text-gray-900 mb-6">
-                                Bridging Local Ambition with Global Standards.
-                            </h3>
-                            <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                                Our mission is simple: to make world-class computer education accessible to every student in Nepal. We achieve this by focusing on **hands-on training**, maintaining a curriculum that matches industry needs, and fostering a supportive, localized learning environment.
-                            </p>
-                            
-                            <blockquote className="border-l-4 border-sky-500 pl-4 py-2 italic text-gray-600 font-medium text-xl">
-                                "The Ultimate IT Solutions"
-                            </blockquote>
-                        </div>
-                        
-                        {/* Location Details (Structured Card) */}
-                        <div className={`p-8 rounded-xl bg-gray-50 border border-gray-200 shadow-md sticky top-8`}>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                                <span className="text-3xl mr-3 text-red-500">📍</span>Find Us in Pokhara
-                            </h3>
-                            <p className="text-lg text-gray-700 mb-4">
-                                Solution Computer House is deeply rooted in the heart of the Gandaki Province, dedicated to serving our local community.
-                            </p>
-                            
-                            <div className="space-y-3">
-                                <div className="flex items-center">
-                                    <span className="text-blue-500 w-6 h-6 mr-3">🏠</span>
-                                    <p className="text-gray-800 font-semibold">Address:</p>
-                                </div>
-                                <p className="ml-9 text-gray-500">{ORGANIZATION_INFO.address}</p>
-                            </div>
-                            
-                            <a 
-                                href={ORGANIZATION_INFO.mapLink} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                className={`mt-6 inline-flex items-center text-base font-semibold ${primaryBlue} text-white px-6 py-3 rounded-full hover:bg-yellow-500 transition duration-300`}
-                            >
-                                View on Map
-                                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
+const values: Value[] = [
+  {
+    title: "Guided Learning",
+    description:
+      "Students learn with clear instruction, practical examples, and steady support from instructors.",
+    icon: <Users size={22} />,
+  },
+  {
+    title: "Hands-on Practice",
+    description:
+      "Courses are built around doing the work, not only reading theory or watching demonstrations.",
+    icon: <MonitorCheck size={22} />,
+  },
+  {
+    title: "Career Confidence",
+    description:
+      "Programs help students build the discipline, tools, and confidence needed for real opportunities.",
+    icon: <BookOpenCheck size={22} />,
+  },
+];
 
-            {/* 3. PILLARS SECTION: Dark background for visual separation and feature emphasis */}
-            <section className={`py-20 sm:py-28 ${darkBg}`}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 className={`text-4xl md:text-5xl font-extrabold ${textLight} mb-4`}>
-                        Our Three Pillars of Success
-                    </h2>
-                    <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-16">
-                        We deliver excellence through a model built on quality, relevance, and community focus.
-                    </p>
-                    
-                    {/* Feature Grid */}
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <FeaturePillar 
-                            icon="👨‍🏫"
-                            title="Expert Instructors"
-                            description="Learn from certified industry professionals who bring real-world case studies and expertise into every session."
-                        />
-                        <FeaturePillar 
-                            icon="💻"
-                            title="Practical Skills Focus"
-                            description="Our courses are project-based, ensuring you graduate with tangible, job-ready skills and a portfolio."
-                        />
-                        <FeaturePillar 
-                            icon="🌐"
-                            title="Community Growth"
-                            description="We are dedicated to fostering a strong tech ecosystem in Pokhara, connecting students with local career opportunities."
-                        />
-                    </div>
-                </div>
-            </section>
-            
-            {/* 4. FINAL CTA: Simple, Bold Footer link */}
-            <div className="bg-sky-50 py-12 text-center border-t border-sky-100">
-                <p className="text-xl text-gray-800 font-semibold mb-4">
-                    Ready to transform your career?
-                </p>
-                <a 
-                    href="/contact" 
-                    className={`inline-block px-10 py-4 text-lg font-bold rounded-full shadow-lg ${primaryBlue} text-white transition duration-300 hover:bg-yellow-500 transform hover:scale-[1.05]`}
-                >
-                    Enroll Now or Ask a Question
-                </a>
-            </div>
-            
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.1,
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.62, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+export default function AboutPage() {
+  return (
+    <main className="relative overflow-hidden bg-soft-purple text-foreground">
+      <section className="relative isolate px-4 pb-16 pt-32 sm:px-6 sm:pb-20 sm:pt-36 lg:px-8">
+        <div className="absolute inset-0 -z-30 bg-[linear-gradient(to_right,rgba(91,33,182,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(75,68,88,0.045)_1px,transparent_1px)] bg-[size:96px_96px]" />
+        <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_1px_1px,rgba(91,33,182,0.12)_1px,transparent_0)] bg-[length:26px_26px] opacity-[0.32]" />
+        <div className="absolute right-[8%] top-28 -z-10 h-56 w-56 bg-primary/10 blur-3xl" />
+        <div className="absolute bottom-8 left-[7%] -z-10 h-44 w-44 bg-accent/12 blur-3xl" />
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_0.72fr] lg:items-end"
+        >
+          <div>
+            <motion.p
+              variants={itemVariants}
+              className="text-xs font-semibold uppercase tracking-[0.25em] text-primary"
+            >
+              About {organization.name}
+            </motion.p>
+            <motion.h1
+              variants={itemVariants}
+              className="mt-6 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-normal text-foreground sm:text-6xl lg:text-7xl"
+            >
+              Practical computer education rooted in Hemja, Pokhara.
+            </motion.h1>
+            <motion.p
+              variants={itemVariants}
+              className="mt-7 max-w-2xl text-base leading-8 text-muted sm:text-lg"
+            >
+              We help students build real digital skills through focused
+              instruction, hands-on practice, and diploma-level training that
+              prepares them for confident next steps.
+            </motion.p>
+            <motion.div
+              variants={itemVariants}
+              className="mt-10 flex flex-col gap-3 sm:flex-row"
+            >
+              <Link
+                href="/courses"
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-semibold text-background shadow-[0_18px_34px_rgba(91,33,182,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-primary-dark"
+              >
+                Explore Courses
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-background px-7 text-sm font-semibold text-primary shadow-[inset_0_0_0_1px_rgba(91,33,182,0.15),0_12px_26px_rgba(39,25,61,0.06)] transition duration-300 hover:-translate-y-0.5 hover:bg-accent-soft"
+              >
+                Contact Us
+              </Link>
+            </motion.div>
+          </div>
+
+          <motion.figure
+            variants={itemVariants}
+            className="relative h-[380px] overflow-hidden bg-soft-purple shadow-[0_28px_74px_rgba(40,20,80,0.14)] sm:h-[480px] lg:h-[560px]"
+          >
+            <Image
+              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=85"
+              alt="Students learning together in a classroom"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 42vw"
+              className="object-cover object-[48%_50%]"
+            />
+          </motion.figure>
+        </motion.div>
+      </section>
+
+      <section className="bg-background px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.72fr_1fr] lg:items-start">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+              Our Story
+            </p>
+            <h2 className="mt-4 max-w-xl text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
+              Built for students who need clear, practical guidance.
+            </h2>
+          </div>
+
+          <div className="grid gap-6 text-base leading-8 text-muted">
+            <p>
+              {organization.name} exists to make computer education more useful,
+              approachable, and relevant for local students. Our approach is
+              simple: teach the fundamentals clearly, give students enough
+              practice, and help them understand how those skills are used in
+              real work.
+            </p>
+            <p>
+              From basic computer literacy to diploma programs and practical
+              skill tracks, the institute is designed for learners who want
+              structure, confidence, and consistent instructor support.
+            </p>
+          </div>
         </div>
-    );
+      </section>
+
+      <section className="bg-soft-purple px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+              Leadership
+            </p>
+            <h2 className="mt-4 text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
+              Meet the owners behind the institute.
+            </h2>
+            <p className="mt-5 text-base leading-8 text-muted">
+              Replace these placeholder portraits, names, and bios with your
+              real institution owners whenever you are ready.
+            </p>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            {owners.map((owner) => (
+              <article
+                key={owner.role}
+                className="grid overflow-hidden bg-background shadow-[0_22px_60px_rgba(40,20,80,0.08)] sm:grid-cols-[0.72fr_1fr]"
+              >
+                <div className="relative min-h-[320px] sm:min-h-full">
+                  <Image
+                    src={owner.image}
+                    alt={owner.imageAlt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 28vw"
+                    className={`object-cover ${owner.objectPosition}`}
+                  />
+                </div>
+                <div className="flex flex-col justify-end p-7 sm:p-8">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                    {owner.role}
+                  </p>
+                  <h3 className="mt-3 text-3xl font-semibold text-foreground">
+                    {owner.name}
+                  </h3>
+                  <p className="mt-5 text-sm leading-7 text-muted">
+                    {owner.bio}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-background px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
+          {values.map((value) => (
+            <article
+              key={value.title}
+              className="bg-background p-7 shadow-[inset_0_0_0_1px_rgba(91,33,182,0.10),0_18px_48px_rgba(40,20,80,0.06)]"
+            >
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-soft-purple text-primary">
+                {value.icon}
+              </div>
+              <h3 className="text-2xl font-semibold text-foreground">
+                {value.title}
+              </h3>
+              <p className="mt-4 text-sm leading-7 text-muted">
+                {value.description}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-4 pb-20 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-8 bg-foreground p-7 text-background sm:p-10 lg:grid-cols-[1fr_0.8fr] lg:items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">
+              Visit Us
+            </p>
+            <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">
+              Find us in Hemja, Pokhara.
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-background/70">
+              {organization.address}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+            <a
+              href={organization.mapLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent px-6 text-sm font-semibold text-foreground transition duration-300 hover:-translate-y-0.5 hover:bg-accent-soft"
+            >
+              <MapPin size={17} />
+              View on Map
+            </a>
+            <Link
+              href="/contact"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-background/10 px-6 text-sm font-semibold text-background transition duration-300 hover:-translate-y-0.5 hover:bg-background/15"
+            >
+              Ask a Question
+              <ArrowRight size={17} />
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }

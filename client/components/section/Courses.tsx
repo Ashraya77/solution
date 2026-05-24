@@ -1,51 +1,68 @@
-"use client";
+'use client';
 
 import React from 'react';
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 import CourseCard from '../ui/CourseCard';
 import { courses } from '@/constants/navLinks';
 
 const Courses = () => {
-  const lightBg = "bg-gray-50";
-
-  // 1. Container variants to handle the "one by one" logic
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        // Lower number = faster sequence
-        staggerChildren: 0.1, 
-        delayChildren: 0.2,
+        staggerChildren: 0.12,
       },
     },
   };
 
   return (
-    <section className={`${lightBg} py-16 px-6 relative z-0`}>
+    <section className="bg-soft-purple py-16 px-6">
       <div className="max-w-6xl mx-auto">
-        
-        {/* Animated Heading */}
-        <motion.h2 
-          initial={{ opacity: 0, y: -10 }}
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-3xl font-bold text-center text-yellow-400 mb-12"
+          transition={{ duration: 0.45 }}
+          className="mb-12 max-w-2xl"
         >
-          Expert-Led <span className="text-sky-600">Computer Courses</span>
-        </motion.h2>
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+            Courses We Offer
+          </p>
 
-        {/* 2. Wrap the grid in a motion.div using the container variants */}
-        <motion.div 
+          <h2 className="text-3xl md:text-4xl font-black leading-tight text-foreground">
+            Learn practical computer skills with us
+          </h2>
+
+          <p className="mt-4 text-base md:text-lg leading-relaxed text-muted">
+            At Solution Computer, we provide beginner-friendly and career-focused
+            computer courses for students, job seekers, and working professionals.
+          </p>
+        </motion.div>
+
+        {/* Course Grid */}
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }} // Starts when 10% of the grid is visible
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          viewport={{ once: true, amount: 0.15 }}
+          className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3"
         >
           {courses.map((course, index) => (
-            <CourseCard key={index} {...course} />
+            <motion.div
+              key={index}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.5, ease: 'easeOut' },
+                },
+              }}
+            >
+              <CourseCard {...course} />
+            </motion.div>
           ))}
         </motion.div>
       </div>

@@ -2,25 +2,50 @@
 
 :root {
   --background: #ffffff;
+  --foreground: #1f1f24;
 }
 
 @theme inline {
-  --color-primary: #B5A642;
-  --color-secondary: #C79F32;
-  --color-secondary2: #F5F5DC;
-   --color-backg: #297BC2;
+  /* Brand colors */
+  --color-primary: #6d28d9;
+  --color-primary-dark: #4c1d95;
 
- 
+  /* Accent colors */
+  --color-accent: #facc15;
+  --color-accent-soft: #fef3c7;
+
+  /* Base colors */
+  --color-background: #ffffff;
+  --color-foreground: #1f1f24;
+
+  /* Useful neutrals */
+  --color-muted: #6b7280;
+  --color-soft-purple: #f5f3ff;
+  --color-border-subtle: #e5e7eb;
+
+  /* Typography */
+  --font-sans: var(--font-manrope), Arial, Helvetica, sans-serif;
+  --font-heading: var(--font-space-grotesk), Arial, Helvetica, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #1f1f24;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-manrope), Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-space-grotesk), Arial, Helvetica, sans-serif;
 }

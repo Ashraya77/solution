@@ -37,9 +37,9 @@ const CourseCard = ({ title, duration, level, price }: CourseCardtypes) => {
       variants={cardVariants}
       // Layout ensures smooth movement if the grid changes
       layout
-      className="group relative w-full max-w-sm p-px rounded-3xl bg-linear-to-b from-slate-200 to-transparent hover:from-sky-400 transition-all duration-500"
+      className="group relative w-full max-w-sm p-px rounded-3xl bg-linear-to-b from-border-subtle to-transparent hover:from-primary transition-all duration-500"
     >
-      <div className="relative bg-white p-6 rounded-[23px] overflow-hidden h-full">
+      <div className="relative bg-background p-6 rounded-[23px] overflow-hidden h-full">
         
         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <TrendingUp size={80} strokeWidth={1} />
@@ -49,29 +49,29 @@ const CourseCard = ({ title, duration, level, price }: CourseCardtypes) => {
           <div className="flex justify-between items-center mb-8">
             <motion.div 
               whileHover={{ scale: 1.05 }}
-              className="px-3 py-1 bg-slate-100 rounded-lg text-[10px] uppercase tracking-widest font-black text-slate-500 group-hover:bg-sky-50 group-hover:text-sky-600 transition-colors"
+              className="px-3 py-1 bg-soft-purple rounded-lg text-[10px] uppercase tracking-widest font-black text-muted group-hover:bg-accent-soft group-hover:text-primary transition-colors"
             >
               {level}
             </motion.div>
-            <div className="text-xl font-black text-slate-900 italic tracking-tighter">
+            <div className="text-xl font-black text-foreground italic tracking-tighter">
               {price}
             </div>
           </div>
 
-          <h3 className="text-2xl font-bold text-slate-800 leading-[1.1] mb-4 tracking-tight">
+          <h3 className="text-2xl font-bold text-foreground leading-[1.1] mb-4 tracking-tight">
             {title}
           </h3>
 
           <div className="flex gap-4 mb-8">
             <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-sky-50 rounded-md text-sky-600">
+              <div className="p-1.5 bg-soft-purple rounded-md text-primary">
                 <Timer size={14} />
               </div>
-              <span className="text-xs font-semibold text-slate-400 uppercase">{duration}</span>
+              <span className="text-xs font-semibold text-muted uppercase">{duration}</span>
             </div>
           </div>
 
-          <Link href="/enroll" className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold flex items-center justify-center gap-2 group-hover:bg-sky-600 transition-all active:scale-[0.98]">
+          <Link href="/enroll" className="w-full py-4 bg-foreground text-background rounded-xl font-bold flex items-center justify-center gap-2 group-hover:bg-primary transition-all active:scale-[0.98]">
             Start Learning
             <ChevronRight size={18} className="opacity-50 group-hover:translate-x-1 transition-transform" />
           </Link>

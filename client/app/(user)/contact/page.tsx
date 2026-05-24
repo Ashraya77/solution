@@ -1,192 +1,263 @@
-"use client"
-import React from 'react';
+"use client";
 
+import { motion, type Variants } from "framer-motion";
+import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 
-// Organization Details
-const ORGANIZATION_INFO = {
-    name: "Solution Computer House",
-    address: "123 Technology Ave, Tech City, TX 78701",
-    phone: "+1 (555) 123-4567",
-    email: "info@solutioncomputerhouse.com",
-    mapLink: "https://maps.app.goo.gl/example", 
+const organization = {
+  name: "Solution Computer House",
+  address: "Pokhara-25, Hemja, Gandaki Province, Nepal",
+  phone: "+977 (XX) XXX-XXXX",
+  email: "info@solutioncomputerhouse.com",
+  mapLink: "https://maps.app.goo.gl/example",
 };
 
-const ContactMetadata = {
-    title: "Contact Us | Solution Computer House - Enrollment & Inquiries",
-    description: "Ready to enroll in a computer course? Contact Solution Computer House for inquiries, course details, and scheduling a free consultation. Your path to certification starts here.",
-    keywords: "computer courses contact, IT diploma inquiry, basic computer training support, Solution Computer House email",
-    ogType: "website",
-    ogUrl: "https://www.yourdomain.com/contact", 
+const contactItems = [
+  {
+    title: "Call Us",
+    value: organization.phone,
+    action: "Click to call",
+    href: `tel:${organization.phone}`,
+    icon: <Phone size={22} />,
+  },
+  {
+    title: "Email Us",
+    value: organization.email,
+    action: "Send an email",
+    href: `mailto:${organization.email}`,
+    icon: <Mail size={22} />,
+  },
+  {
+    title: "Visit Our Institute",
+    value: organization.address,
+    action: "Get directions",
+    href: organization.mapLink,
+    icon: <MapPin size={22} />,
+  },
+];
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.1,
+      staggerChildren: 0.12,
+    },
+  },
 };
 
-interface CourseItem {
-  title: string;
-  description: string;
-  alignment: 'left' | 'right';
-  image?: string; 
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.62, ease: [0.16, 1, 0.3, 1] },
+  },
+};
 
-}
+export default function ContactPage() {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    alert("Message sent. We will get back to you shortly.");
+  };
 
-interface CourseBlockProps {
-  course: CourseItem;
-  index: number;
-}
-// -------------------------------------------
+  return (
+    <main className="relative overflow-hidden bg-background text-foreground">
+      <section className="relative isolate px-4 pb-14 pt-32 sm:px-6 sm:pb-20 sm:pt-36 lg:px-8">
+        <div className="absolute inset-0 -z-30 bg-[linear-gradient(to_right,rgba(91,33,182,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(75,68,88,0.045)_1px,transparent_1px)] bg-[size:96px_96px]" />
+        <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_1px_1px,rgba(91,33,182,0.12)_1px,transparent_0)] bg-[length:26px_26px] opacity-[0.32]" />
+        <div className="absolute right-[8%] top-28 -z-10 h-56 w-56 bg-primary/10 blur-3xl" />
+        <div className="absolute bottom-10 left-[8%] -z-10 h-44 w-44 bg-accent/12 blur-3xl" />
 
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_0.62fr] lg:items-end"
+        >
+          <div>
+            <motion.p
+              variants={itemVariants}
+              className="text-xs font-semibold uppercase tracking-[0.25em] text-primary"
+            >
+              Contact {organization.name}
+            </motion.p>
+            <motion.h1
+              variants={itemVariants}
+              className="mt-6 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-normal text-foreground sm:text-6xl lg:text-7xl"
+            >
+              Ask about courses, enrollment, or diploma training.
+            </motion.h1>
+          </div>
 
-export default function page() {
-    
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        // Handle form submission logic here (e.g., API call)
-        alert('Message Sent! We will get back to you shortly.');
-    };
+          <motion.p
+            variants={itemVariants}
+            className="max-w-xl text-base leading-8 text-muted sm:text-lg lg:justify-self-end"
+          >
+            Whether you are choosing a basic course, diploma program, or
+            practical skill track, our team can help you understand the right
+            next step.
+          </motion.p>
+        </motion.div>
+      </section>
 
-    return (
-        <>
-            {/* If using a Head Management Library like React Helmet/React Head */}
-            {/* <HeadMeta data={ContactMetadata} /> */}
-            
-            {/* 1. New Header Section for the Full-Width/Full-Top Background */}
-            <header className="bg-backg pt-32 pb-16">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 className="text-base font-semibold text-yellow-300 tracking-wide uppercase">Get In Touch</h2>
-                    {/* Text changed to dark color for contrast against yellow-100 */}
-                    <p className="mt-1 text-4xl font-extrabold text-white sm:text-5xl lg:text-6xl">
-                        Start Your Certification Journey
-                    </p>
-                    <p className="mt-4 text-xl text-gray-300 max-w-2xl mx-auto">
-                        Whether you have questions about our diploma programs or basic courses, our team is here to help.
-                    </p>
+      <section className="px-4 pb-20 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_0.62fr]">
+          <motion.div
+            variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="bg-background p-6 shadow-[inset_0_0_0_1px_rgba(91,33,182,0.10),0_24px_70px_rgba(40,20,80,0.08)] sm:p-8 lg:p-10"
+          >
+            <div className="mb-8">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                Send a Message
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
+                Tell us what you want to learn.
+              </h2>
+            </div>
+
+            <form onSubmit={handleSubmit} className="grid gap-5">
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="mb-2 block text-sm font-bold text-foreground"
+                  >
+                    Full Name
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    className="min-h-12 w-full rounded-xl border border-border-subtle bg-soft-purple px-4 text-foreground outline-none transition duration-300 placeholder:text-muted focus:border-primary focus:bg-background"
+                    placeholder="Your name"
+                  />
                 </div>
-            </header>
-            
-            {/* 2. Main Content Section (Adjusted padding to connect to header) */}
-            <section className="bg-white py-16 sm:py-24 pt-8"> {/* Reduced top padding (pt-8) */}
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                    {/* Original Header/Introduction section is REMOVED from here */}
-                    
-                    <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-16">
-                        
-                        {/* 1. Contact Form (Tailwind classes unchanged) */}
-                        <div className="lg:col-span-2">
-                            <h3 className="text-3xl font-bold text-gray-900 mb-6 border-b-2 border-yellow-400 pb-2 inline-block">
-                                Send Us a Message
-                            </h3>
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                
-                                {/* Name */}
-                                <div>
-                                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        id="name"
-                                        required
-                                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:ring-yellow-500 text-black focus:border-yellow-500 transition duration-150"
-                                    />
-                                </div>
-
-                                {/* Email */}
-                                <div>
-                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        required
-                                        className="mt-1 block w-full border text-black border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"
-                                    />
-                                </div>
-                                
-                                {/* Subject/Course Interest */}
-                                <div>
-                                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700">Course Interest</label>
-                                    <select
-                                        id="subject"
-                                        name="subject"
-                                        required
-                                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:ring-yellow-500 text-black focus:border-yellow-500 transition duration-150 bg-white"
-                                    >
-                                        <option value="">-- Select a Course or Inquiry Type --</option>
-                                        <option value="diploma">Diploma Courses (Advanced)</option>
-                                        <option value="basic">Basic Computer Skills</option>
-                                        <option value="enrollment">Enrollment Process</option>
-                                        <option value="general">General Inquiry</option>
-                                    </select>
-                                </div>
-
-                                {/* Message */}
-                                <div>
-                                    <label htmlFor="message" className="block text-sm font-medium text-gray-700">Your Message</label>
-                                    <textarea
-                                        id="message"
-                                        name="message"
-                                        rows={4}
-                                        required
-                                        className="text-black mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-3 px-4 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"
-                                    ></textarea>
-                                </div>
-
-                                {/* Submit Button (Yellow Primary CTA) */}
-                                <div>
-                                    <button
-                                        type="submit"
-                                        className="inline-flex justify-center py-3 px-8 border border-transparent text-lg font-medium rounded-full shadow-lg text-gray-900 bg-yellow-400 hover:bg-yellow-500 transition duration-300 w-full sm:w-auto"
-                                    >
-                                        Submit Inquiry
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        
-                        {/* 2. Contact Information Details (Unchanged) */}
-                        <div className="space-y-10">
-                            
-                            {/* Phone */}
-                            <div className="flex items-start">
-                                <span className="shrink-0 p-3 rounded-full bg-yellow-100 text-yellow-600">
-                                    <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                                </span>
-                                <div className="ml-4">
-                                    <h4 className="text-lg font-medium text-gray-900">Call Us</h4>
-                                    <p className="mt-1 text-gray-600">{ORGANIZATION_INFO.phone}</p>
-                                    <a href={`tel:${ORGANIZATION_INFO.phone}`} className="text-yellow-600 hover:text-yellow-700 text-sm font-medium">Click to Call</a>
-                                </div>
-                            </div>
-
-                            {/* Email */}
-                            <div className="flex items-start">
-                                <span className="shrink-0 p-3 rounded-full bg-yellow-100 text-yellow-600">
-                                    <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                                </span>
-                                <div className="ml-4">
-                                    <h4 className="text-lg font-medium text-gray-900">Email Us</h4>
-                                    <p className="mt-1 text-gray-600">{ORGANIZATION_INFO.email}</p>
-                                    <a href={`mailto:${ORGANIZATION_INFO.email}`} className="text-yellow-600 hover:text-yellow-700 text-sm font-medium">Send an Email</a>
-                                </div>
-                            </div>
-                            
-                            {/* Address/Location */}
-                            <div className="flex items-start">
-                                <span className="shrink-0 p-3 rounded-full bg-yellow-100 text-yellow-600">
-                                    <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                                </span>
-                                <div className="ml-4">
-                                    <h4 className="text-lg font-medium text-gray-900">Visit Our Campus</h4>
-                                    <p className="mt-1 text-gray-600">{ORGANIZATION_INFO.address}</p>
-                                    <a href={ORGANIZATION_INFO.mapLink} target="_blank" rel="noopener noreferrer" className="text-yellow-600 hover:text-yellow-700 text-sm font-medium">Get Directions</a>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="mb-2 block text-sm font-bold text-foreground"
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    className="min-h-12 w-full rounded-xl border border-border-subtle bg-soft-purple px-4 text-foreground outline-none transition duration-300 placeholder:text-muted focus:border-primary focus:bg-background"
+                    placeholder="you@example.com"
+                  />
                 </div>
-            </section>
-        </>
-    );
-}
+              </div>
 
-// NOTE: You would typically export the Metadata object to use in your main Layout/Head component.
-export { ContactMetadata };
+              <div>
+                <label
+                  htmlFor="subject"
+                  className="mb-2 block text-sm font-bold text-foreground"
+                >
+                  Course Interest
+                </label>
+                <select
+                  id="subject"
+                  name="subject"
+                  required
+                  className="min-h-12 w-full rounded-xl border border-border-subtle bg-soft-purple px-4 text-foreground outline-none transition duration-300 focus:border-primary focus:bg-background"
+                >
+                  <option value="">Select a course or inquiry type</option>
+                  <option value="diploma">Diploma Courses</option>
+                  <option value="basic">Basic Computer Skills</option>
+                  <option value="web-development">Web Development Training</option>
+                  <option value="enrollment">Enrollment Process</option>
+                  <option value="general">General Inquiry</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="message"
+                  className="mb-2 block text-sm font-bold text-foreground"
+                >
+                  Your Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={5}
+                  required
+                  className="w-full resize-none rounded-xl border border-border-subtle bg-soft-purple px-4 py-3 text-foreground outline-none transition duration-300 placeholder:text-muted focus:border-primary focus:bg-background"
+                  placeholder="Tell us about the course you are interested in."
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-semibold text-background shadow-[0_18px_34px_rgba(91,33,182,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-primary-dark sm:w-fit"
+              >
+                Submit Inquiry
+                <ArrowRight size={17} />
+              </button>
+            </form>
+          </motion.div>
+
+          <motion.aside
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid gap-4 self-start"
+          >
+            {contactItems.map((item) => (
+              <motion.article
+                key={item.title}
+                variants={itemVariants}
+                className="bg-soft-purple p-6 shadow-[inset_0_0_0_1px_rgba(91,33,182,0.08)]"
+              >
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-background text-primary">
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm leading-7 text-muted">
+                  {item.value}
+                </p>
+                <a
+                  href={item.href}
+                  target={item.title === "Visit Our Institute" ? "_blank" : undefined}
+                  rel={
+                    item.title === "Visit Our Institute"
+                      ? "noopener noreferrer"
+                      : undefined
+                  }
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-primary transition duration-300 hover:gap-3"
+                >
+                  {item.action}
+                  <ArrowRight size={15} />
+                </a>
+              </motion.article>
+            ))}
+
+            <div className="bg-foreground p-6 text-background">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">
+                Visit
+              </p>
+              <p className="mt-4 text-2xl font-semibold">
+                We are based in Hemja, Pokhara.
+              </p>
+              <p className="mt-4 text-sm leading-7 text-background/70">
+                Reach out before visiting so we can guide you to the right
+                course counselor or instructor.
+              </p>
+            </div>
+          </motion.aside>
+        </div>
+      </section>
+    </main>
+  );
+}

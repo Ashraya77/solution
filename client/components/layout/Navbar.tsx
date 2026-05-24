@@ -1,65 +1,127 @@
-"use client"
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
-import { navLinks } from '@/constants/navLinks';
-import { useState } from 'react';
+"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+
+type NavItem = {
+  label: string;
+  href: string;
+};
+
+const navItems: NavItem[] = [
+  { label: "Home", href: "/" },
+  { label: "Courses", href: "/courses" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
 
 export default function Navbar() {
-  const pathname: string = usePathname();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === href : pathname.startsWith(href);
+
   return (
-    <nav className="fixed z-10 left-0 right-0 top-2 bg-white/20 border-b border-gray-300 backdrop-blur-md p-4 md:mx-80 lg:mx-32 xl:mx-64 2xl:mx-80 rounded-4xl">
-      <div className="px-4 md:px-10 flex justify-between items-center">
-        <Link href="/" className="text-yellow-400 font-bold text-2xl  hover:text-gray-300 transition duration-300">
-        SOLUTION
+    <motion.header
+      initial={{ opacity: 0, y: -18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.58, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 lg:px-8"
+    >
+      <nav
+        aria-label="Primary navigation"
+        className="mx-auto flex max-w-7xl items-center justify-between rounded-full bg-background px-4 py-2.5 shadow-[0_16px_42px_rgba(39,25,61,0.10)] ring-1 ring-primary/10 sm:px-5 lg:px-6"
+      >
+        <Link
+          href="/"
+          onClick={() => setIsOpen(false)}
+          aria-label="Solution Computer House home"
+          className="group leading-none"
+        >
+          <span className="block text-[1.05rem] font-bold tracking-normal text-foreground transition duration-300 group-hover:text-primary">
+            Solution
+          </span>
+          <span className="mt-1 block text-[0.61rem] font-bold uppercase tracking-[0.22em] text-primary/75">
+            Computer House
+          </span>
         </Link>
-        
-        {/* Desktop navbar */}
-        <div className="hidden md:flex space-x-4">
-          {navLinks.map((link) => (
+
+        <div className="hidden items-center gap-8 md:flex lg:gap-9">
+          {navItems.map((item) => (
             <Link
-              key={link.name}
-              href={link.href}
-              className={`font-bold px-5 py-2 text-md transition duration-300 ${pathname === link.href ? 'text-yellow-300' : 'text-black hover:text-yellow-300'}`}
+              key={item.href}
+              href={item.href}
+              className={`text-sm font-bold transition duration-300 hover:text-primary ${
+                isActive(item.href) ? "text-primary" : "text-muted"
+              }`}
             >
-              {link.name}
+              {item.label}
             </Link>
           ))}
         </div>
-        
-        {/* Hamburger button */}
-        <button 
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden  text-black hover:text-yellow-300 focus:outline-none"
+
+        <Link
+          href="/enroll"
+          className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-background shadow-[0_12px_26px_rgba(91,33,182,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-primary-dark md:inline-flex"
         >
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            {isOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-            )}
-          </svg>
+          Apply Now
+        </Link>
+
+        <button
+          type="button"
+          aria-expanded={isOpen}
+          aria-controls="mobile-navigation"
+          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+          onClick={() => setIsOpen((open) => !open)}
+          className="flex h-10 w-10 items-center justify-center text-foreground transition duration-300 hover:text-primary md:hidden"
+        >
+          {isOpen ? (
+            <X size={23} strokeWidth={1.8} aria-hidden="true" />
+          ) : (
+            <Menu size={23} strokeWidth={1.8} aria-hidden="true" />
+          )}
         </button>
-      </div>
-      
-      {/* Mobile navlinks */}
-      {isOpen && (
-        <div className="md:hidden mt-4 bg-white/90 backdrop-blur-md rounded-2xl border border-gray-200">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.name}
-                href={link.href} 
-                className={`block px-3 py-2 rounded-md ${pathname === link.href ? 'bg-yellow-300 text-black' : 'text-gray-700 hover:bg-blue-50'}`}
-                onClick={() => setIsOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-    </nav>
+      </nav>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            id="mobile-navigation"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            className="mx-auto mt-3 max-w-7xl rounded-[1.75rem] bg-background px-6 py-5 shadow-[0_18px_45px_rgba(39,25,61,0.12)] ring-1 ring-primary/10 md:hidden"
+          >
+            <div className="grid gap-1">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`py-3 text-sm font-bold transition duration-300 hover:text-primary ${
+                    isActive(item.href) ? "text-primary" : "text-muted"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+
+            <Link
+              href="/enroll"
+              onClick={() => setIsOpen(false)}
+              className="mt-4 inline-flex rounded-full bg-primary px-5 py-3 text-sm font-semibold text-background transition duration-300 hover:bg-primary-dark"
+            >
+              Apply Now
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }
