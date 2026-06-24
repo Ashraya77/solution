@@ -1,68 +1,51 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { LoginService } from "@/app/lib/services/LoginService";
+import { Eye, EyeOff, Lock, LogIn, User } from "lucide-react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { getStoredToken, LoginService } from "@/app/lib/services/LoginService";
 
 type LoginFormValues = {
-  email: string;
+  username: string;
   password: string;
-  rememberMe: boolean;
 };
 
 const getErrorMessage = (error: unknown) => {
-  return error instanceof Error ? error.message : "Invalid email or password";
+  return error instanceof Error ? error.message : "Invalid username or password";
 };
 
-export default function LoginPage() {
+export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const searchParams = useSearchParams();
+  const router = useRouter();
   const error = searchParams.get("error");
   const displayError = apiError || error;
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<LoginFormValues>({
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
-      rememberMe: false,
     },
   });
-  const router = useRouter();
+
+  useEffect(() => {
+    if (getStoredToken()) {
+      router.replace("/dashboard");
+    }
+  }, [router]);
 
   const onSubmit = async (data: LoginFormValues) => {
     setApiError("");
     setLoading(true);
 
     try {
-      await LoginService(data.email, data.password);
-
-      // Backend login disabled while the API is being rebuilt.
-      // const response = await fetch("http://localhost:5000/auth/login", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   credentials: "include",
-      //   body: JSON.stringify({
-      //     email: data.email,
-      //     password: data.password,
-      //   }),
-      // });
-      //
-      // const result = await response.json();
-      //
-      // if (!response.ok) {
-      //   throw new Error(result.message || "Invalid credentials");
-      // }
-      console.log("logged in");
-      // Redirect to dashboard
+      await LoginService(data.username, data.password);
       router.push("/dashboard");
       router.refresh();
     } catch (err) {
@@ -73,53 +56,52 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-full mb-4">
-            <Lock className="w-8 h-8 text-white" />
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+      <div className="w-full max-w-md rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
+        <div className="mb-8 text-center">
+          <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-lg bg-purple-700">
+            <Lock className="h-7 w-7 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
-          <p className="text-gray-600 mt-2">Sign in to your account</p>
+          <p className="text-xs font-bold uppercase text-yellow-600">
+            Solution Computer House
+          </p>
+          <h1 className="mt-1 text-3xl font-bold text-slate-950">Admin Login</h1>
         </div>
 
         {displayError && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-800 text-sm">{displayError}</p>
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
+            <p className="text-sm text-red-800">{displayError}</p>
           </div>
         )}
 
-        <div className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              htmlFor="username"
+              className="mb-2 block text-sm font-medium text-slate-700"
             >
-              Email Address
+              Username
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-gray-400" />
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <User className="h-5 w-5 text-slate-400" />
               </div>
               <input
-                id="email"
-                type="email"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address",
-                  },
+                id="username"
+                type="text"
+                autoComplete="username"
+                {...register("username", {
+                  required: "Username is required",
                 })}
-                className={`text-gray-700 block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition ${
-                  errors.email ? "border-red-500" : "border-gray-300"
+                className={`block w-full rounded-lg border py-3 pl-10 pr-3 text-slate-700 outline-none transition focus:border-transparent focus:ring-2 focus:ring-purple-600 ${
+                  errors.username ? "border-red-500" : "border-slate-300"
                 }`}
-                placeholder="you@example.com"
+                placeholder="admin123"
               />
             </div>
-            {errors.email && (
+            {errors.username && (
               <p className="mt-1 text-sm text-red-600">
-                {errors.email.message}
+                {errors.username.message}
               </p>
             )}
           </div>
@@ -127,38 +109,40 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="mb-2 block text-sm font-medium text-slate-700"
             >
               Password
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-gray-400" />
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <Lock className="h-5 w-5 text-slate-400" />
               </div>
               <input
                 id="password"
                 type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters",
+                    value: 8,
+                    message: "Password must be at least 8 characters",
                   },
                 })}
-                className={`block w-full pl-10 pr-12 py-3 border rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition ${
-                  errors.password ? "border-red-500" : "border-gray-300"
+                className={`block w-full rounded-lg border py-3 pl-10 pr-12 text-slate-700 outline-none transition focus:border-transparent focus:ring-2 focus:ring-purple-600 ${
+                  errors.password ? "border-red-500" : "border-slate-300"
                 }`}
-                placeholder="••••••••"
+                placeholder="Solution@25"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                className="absolute inset-y-0 right-0 flex items-center pr-3"
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                  <EyeOff className="h-5 w-5 text-slate-400 hover:text-slate-600" />
                 ) : (
-                  <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                  <Eye className="h-5 w-5 text-slate-400 hover:text-slate-600" />
                 )}
               </button>
             </div>
@@ -169,43 +153,15 @@ export default function LoginPage() {
             )}
           </div>
 
-          <div className="flex items-center justify-between">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                {...register("rememberMe")}
-                className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-              />
-              <span className="ml-2 text-sm text-gray-600">Remember me</span>
-            </label>
-            <a
-              href="#"
-              className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              Forgot password?
-            </a>
-          </div>
-
           <button
-            onClick={handleSubmit(onSubmit)}
+            type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-purple-700 px-4 py-3 font-semibold text-white transition hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
           >
+            <LogIn className="h-4 w-4" />
             {loading ? "Signing in..." : "Sign In"}
           </button>
-        </div>
-
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            Don&apos;t have an account?{" "}
-            <a
-              href="#"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              Sign up
-            </a>
-          </p>
-        </div>
+        </form>
       </div>
     </div>
   );

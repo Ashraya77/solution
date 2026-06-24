@@ -5,14 +5,19 @@ import {
   Body,
   Param,
   Delete,
+  Patch,
   HttpCode,
   HttpStatus,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
+import { UpdateStudentDto } from './dto/update-student.dto';
+import { AdminGuard } from '../common/guards/admin.guard';
 
 @Controller('students')
+@UseGuards(AdminGuard)
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
@@ -41,6 +46,18 @@ export class StudentController {
     const student = await this.studentService.findOne(id);
     return {
       message: 'Student retrieved successfully',
+      data: student,
+    };
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateStudentDto: UpdateStudentDto,
+  ) {
+    const student = await this.studentService.update(id, updateStudentDto);
+    return {
+      message: 'Student updated successfully',
       data: student,
     };
   }

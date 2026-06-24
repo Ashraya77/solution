@@ -1,32 +1,64 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import { IsString, IsEmail, MinLength, IsNotEmpty } from 'class-validator';
+import { PaymentStatus } from '@prisma/client';
+import { Type } from 'class-transformer';
+import {
+  IsDateString,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export class CreateStudentDto {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   @IsString()
   @MinLength(2, { message: 'Name must be at least 2 characters' })
   fullName: string;
+
+  @IsDateString({}, { message: 'Date of birth is required' })
+  dateOfBirth: string;
+
+  @IsString()
+  @IsNotEmpty({ message: 'Gender is required' })
+  gender: string;
+
+  @IsString()
+  @MinLength(7, { message: 'Valid phone number required' })
+  phone: string;
 
   @IsEmail({}, { message: 'Invalid email address' })
   email: string;
 
   @IsString()
-  @MinLength(10, { message: 'Valid phone number required' })
-  phone: string;
-
-  @IsString()
-  @IsNotEmpty({ message: 'Date of birth is required' })
-  dob: string;
-
-  @IsString()
-  @IsNotEmpty({ message: 'Please select a course' })
-  course: string;
-
-  @IsString()
-  @MinLength(5, { message: 'Please enter your full address' })
+  @MinLength(3, { message: 'Please enter the address' })
   address: string;
 
   @IsString()
-  @MinLength(10, { message: 'Please tell us a bit more (min 10 chars)' })
-  message: string;
+  @MinLength(2, { message: 'Guardian name is required' })
+  guardianName: string;
+
+  @IsString()
+  @MinLength(7, { message: 'Guardian phone is required' })
+  guardianPhone: string;
+
+  @IsString()
+  @IsNotEmpty({ message: 'Course name is required' })
+  courseName: string;
+
+  @IsDateString({}, { message: 'Admission date is required' })
+  admissionDate: string;
+
+  @Type(() => Number)
+  @IsNumber({}, { message: 'Fee amount must be a number' })
+  @Min(0, { message: 'Fee amount cannot be negative' })
+  feeAmount: number;
+
+  @IsEnum(PaymentStatus, { message: 'Payment status is invalid' })
+  paymentStatus: PaymentStatus;
+
+  @IsString()
+  @IsOptional()
+  remarks?: string;
 }

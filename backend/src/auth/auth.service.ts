@@ -2,12 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'prisma/prisma.service';
 import type { Response } from 'express';
-
-type Admin = {
-  id: string;
-  email: string;
-  password: string;
-};
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -16,31 +11,35 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(email: string, password: string, response: Response) {
-    const admin: Admin | null = await this.prisma.admin.findUnique({
-      where: { email },
+  async login(username: string, password: string, response: Response) {
+    const admin = await this.prisma.admin.findUnique({
+      where: { username },
     });
 
-    if (!admin) throw new UnauthorizedException('Admin not found');
+    if (!admin) throw new UnauthorizedException('Invalid credentials');
 
-    const match = password.trim() === admin.password.trim();
+    const match = await bcrypt.compare(password, admin.password);
 
-    if (!match) throw new UnauthorizedException('Password does not match');
+    if (!match) throw new UnauthorizedException('Invalid credentials');
 
-    const payload = { sub: admin.id };
+    const payload = { sub: admin.id, username: admin.username };
     const access_token = this.jwtService.sign(payload);
 
-    // Set httpOnly cookie
     response.cookie('access_token', access_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Only HTTPS in production
-      sameSite: 'lax', // or 'lax' if you need cross-site requests
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
       path: '/',
-      maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     return {
       message: 'Login successful',
+      access_token,
+      admin: {
+        id: admin.id,
+        username: admin.username,
+      },
     };
   }
 

@@ -1,16 +1,18 @@
-// components/StudentsTable.tsx
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  createStudent,
-  getStudents,
-  deleteStudent,
-  type CreateStudentInput,
-} from "@/app/lib/services/GetStudents";
-import StudentModal from "./StudentsModal";
-import AddStudentModal from "./AddStudentModal";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Eye, Pencil, Plus, Trash2 } from "lucide-react";
+import { deleteStudent, getStudents } from "@/app/lib/services/GetStudents";
+import { formatCurrency, formatDate } from "@/app/lib/formatters";
 import type { Student } from "@/types/Student";
+import StudentStatusBadge from "./StudentStatusBadge";
+import Toast, { type ToastTone } from "./Toast";
+
+type ToastState = {
+  message: string;
+  tone: ToastTone;
+};
 
 const getErrorMessage = (error: unknown) => {
   return error instanceof Error ? error.message : "Something went wrong";
@@ -20,17 +22,13 @@ export default function StudentsTable() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-
-  useEffect(() => {
-    fetchStudents();
-  }, []);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [toast, setToast] = useState<ToastState | null>(null);
 
   const fetchStudents = async () => {
     setLoading(true);
     setError("");
+
     try {
       const result = await getStudents();
       setStudents(result.data);
@@ -40,174 +38,145 @@ export default function StudentsTable() {
       setLoading(false);
     }
   };
- 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedStudent(null);
-  };
 
-  const handleStudentClick = (student: Student) => {
-    setSelectedStudent(student);
-    setIsModalOpen(true);
-  };
+  useEffect(() => {
+    fetchStudents();
+  }, []);
 
-  const handleEdit = () => {
-    alert("Edit functionality coming soon");
-    // You can implement edit logic here
-  };
+  const handleDelete = async (student: Student) => {
+    const confirmed = window.confirm(
+      `Delete ${student.fullName}? This action cannot be undone.`
+    );
 
-  const handleCreateStudent = async (studentData: CreateStudentInput) => {
-    const result = await createStudent(studentData);
-    setStudents((currentStudents) => [...currentStudents, result.data]);
-  };
-
-  const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this student?")) return;
+    if (!confirmed) return;
 
     try {
-      await deleteStudent(id);
-      setStudents(students.filter((s) => s.id !== id));
+      setDeletingId(student.id);
+      await deleteStudent(student.id);
+      setStudents((current) => current.filter((item) => item.id !== student.id));
+      setToast({ message: "Student deleted successfully.", tone: "success" });
     } catch (err) {
-      alert(getErrorMessage(err));
+      setToast({ message: getErrorMessage(err), tone: "error" });
+    } finally {
+      setDeletingId(null);
     }
   };
 
   if (loading) {
-    return <div className="p-4">Loading students...</div>;
+    return <p className="text-sm text-slate-600">Loading students...</p>;
   }
 
   if (error) {
-    return <div className="p-4 text-red-500">Error: {error}</div>;
+    return (
+      <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+        {error}
+      </div>
+    );
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-black">Students</h2>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          onClick={() => setIsAddModalOpen(true)}
+    <div className="space-y-5">
+      {toast && (
+        <Toast
+          message={toast.message}
+          tone={toast.tone}
+          onClose={() => setToast(null)}
+        />
+      )}
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-950">Students</h1>
+        </div>
+        <Link
+          href="/dashboard/students/new"
+          className="inline-flex h-10 items-center gap-2 rounded-lg bg-purple-700 px-3 text-sm font-bold text-white transition hover:bg-purple-800"
         >
-          Add Student +
-        </button>
+          <Plus className="h-4 w-4" />
+          Add Student
+        </Link>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                Id
-              </th>
-
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                Email
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                Phone
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                Course
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                Total Fee
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                Amount Due
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {students.length === 0 ? (
+      <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[900px] text-left text-sm">
+            <thead className="bg-slate-50 text-xs uppercase text-slate-500">
               <tr>
-                <td colSpan={9} className="px-6 py-4 text-center text-gray-500">
-                  No students found
-                </td>
+                <th className="px-5 py-3 font-bold">Student</th>
+                <th className="px-5 py-3 font-bold">Phone</th>
+                <th className="px-5 py-3 font-bold">Course</th>
+                <th className="px-5 py-3 font-bold">Admission</th>
+                <th className="px-5 py-3 font-bold">Fee</th>
+                <th className="px-5 py-3 font-bold">Status</th>
+                <th className="px-5 py-3 text-right font-bold">Actions</th>
               </tr>
-            ) : (
-              students.map((student) => (
-                <tr key={student.id} className="hover:bg-gray-50 text-gray-800" onClick={() => handleStudentClick(student)}>
-                  <td className="px-6 py-4 whitespace-nowrap">{student.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {student.fullName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {student.email}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {student.phone}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {student.course}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    Rs. {student.totalFee.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    Rs. {student.amountDue.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 py-1 text-xs rounded-full ${
-                        student.paymentStatus === "paid"
-                          ? "bg-green-100 text-green-800"
-                          : student.paymentStatus === "partial"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {student.paymentStatus}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <button
-                      className="text-blue-600 hover:text-blue-800 mr-3"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleEdit();
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="text-red-600 hover:text-red-800"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleDelete(student.id);
-                      }}
-                    >
-                      Delete
-                    </button>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {students.length === 0 ? (
+                <tr>
+                  <td className="px-5 py-8 text-center text-slate-500" colSpan={7}>
+                    No students found
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                students.map((student) => (
+                  <tr key={student.id} className="hover:bg-slate-50">
+                    <td className="px-5 py-4">
+                      <Link
+                        href={`/dashboard/students/${student.id}`}
+                        className="font-bold text-slate-950 transition hover:text-purple-700"
+                      >
+                        {student.fullName}
+                      </Link>
+                      <p className="mt-1 text-xs text-slate-500">{student.email}</p>
+                    </td>
+                    <td className="px-5 py-4 text-slate-700">{student.phone}</td>
+                    <td className="px-5 py-4 text-slate-700">
+                      {student.courseName}
+                    </td>
+                    <td className="px-5 py-4 text-slate-700">
+                      {formatDate(student.admissionDate)}
+                    </td>
+                    <td className="px-5 py-4 font-semibold text-slate-800">
+                      {formatCurrency(student.feeAmount)}
+                    </td>
+                    <td className="px-5 py-4">
+                      <StudentStatusBadge status={student.paymentStatus} />
+                    </td>
+                    <td className="px-5 py-4">
+                      <div className="flex justify-end gap-2">
+                        <Link
+                          href={`/dashboard/students/${student.id}`}
+                          className="grid h-9 w-9 place-items-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-50 hover:text-purple-700"
+                          aria-label={`View ${student.fullName}`}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Link>
+                        <Link
+                          href={`/dashboard/students/${student.id}/edit`}
+                          className="grid h-9 w-9 place-items-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-50 hover:text-purple-700"
+                          aria-label={`Edit ${student.fullName}`}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Link>
+                        <button
+                          type="button"
+                          className="grid h-9 w-9 place-items-center rounded-lg border border-red-200 text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                          onClick={() => handleDelete(student)}
+                          disabled={deletingId === student.id}
+                          aria-label={`Delete ${student.fullName}`}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-
-      <StudentModal
-        student={selectedStudent}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
-      />
-
-      <AddStudentModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSubmit={handleCreateStudent}
-      />
     </div>
   );
 }

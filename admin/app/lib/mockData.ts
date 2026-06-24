@@ -2,77 +2,81 @@ import type { Student } from "@/types/Student";
 
 export type DashboardStats = {
   totalStudents: number;
-  activeCourses: number;
-  revenue: number;
-  enrollments: number;
+  paidStudents: number;
+  partialStudents: number;
+  unpaidStudents: number;
 };
 
 export const mockStudents: Student[] = [
   {
     id: 1,
     fullName: "Aarav Sharma",
-    email: "aarav.sharma@example.com",
+    dateOfBirth: "2002-03-14T00:00:00.000Z",
+    gender: "Male",
     phone: "9800000001",
-    dob: "2002-03-14",
-    course: "Web Development",
+    email: "aarav.sharma@example.com",
     address: "Putalisadak, Kathmandu",
-    message: "Interested in weekend classes.",
-    totalFee: 45000,
-    amountPaid: 45000,
-    amountDue: 0,
-    paymentStatus: "paid",
-    enrollDate: "2026-04-12",
+    guardianName: "Sita Sharma",
+    guardianPhone: "9800000101",
+    courseName: "Web Development",
+    admissionDate: "2026-04-12T00:00:00.000Z",
+    feeAmount: 45000,
+    paymentStatus: "PAID",
+    remarks: "Interested in weekend classes.",
     createdAt: "2026-04-12T09:00:00.000Z",
     updatedAt: "2026-04-12T09:00:00.000Z",
   },
   {
     id: 2,
     fullName: "Nisha Karki",
-    email: "nisha.karki@example.com",
+    dateOfBirth: "2001-11-22T00:00:00.000Z",
+    gender: "Female",
     phone: "9800000002",
-    dob: "2001-11-22",
-    course: "Graphic Design",
+    email: "nisha.karki@example.com",
     address: "Lagankhel, Lalitpur",
-    message: "Needs invoice after admission.",
-    totalFee: 38000,
-    amountPaid: 15000,
-    amountDue: 23000,
-    paymentStatus: "partial",
-    enrollDate: "2026-04-18",
+    guardianName: "Hari Karki",
+    guardianPhone: "9800000102",
+    courseName: "Graphic Design",
+    admissionDate: "2026-04-18T00:00:00.000Z",
+    feeAmount: 38000,
+    paymentStatus: "PARTIAL",
+    remarks: "Needs invoice after admission.",
     createdAt: "2026-04-18T10:30:00.000Z",
     updatedAt: "2026-04-20T12:15:00.000Z",
   },
   {
     id: 3,
     fullName: "Suman Thapa",
-    email: "suman.thapa@example.com",
+    dateOfBirth: "2000-07-08T00:00:00.000Z",
+    gender: "Male",
     phone: "9800000003",
-    dob: "2000-07-08",
-    course: "Digital Marketing",
+    email: "suman.thapa@example.com",
     address: "New Baneshwor, Kathmandu",
-    message: "",
-    totalFee: 30000,
-    amountPaid: 0,
-    amountDue: 30000,
-    paymentStatus: "unpaid",
-    enrollDate: "2026-05-01",
+    guardianName: "Maya Thapa",
+    guardianPhone: "9800000103",
+    courseName: "Digital Marketing",
+    admissionDate: "2026-05-01T00:00:00.000Z",
+    feeAmount: 30000,
+    paymentStatus: "UNPAID",
+    remarks: "",
     createdAt: "2026-05-01T07:45:00.000Z",
     updatedAt: "2026-05-01T07:45:00.000Z",
   },
   {
     id: 4,
     fullName: "Pratiksha Rai",
-    email: "pratiksha.rai@example.com",
+    dateOfBirth: "2003-01-19T00:00:00.000Z",
+    gender: "Female",
     phone: "9800000004",
-    dob: "2003-01-19",
-    course: "Office Package",
+    email: "pratiksha.rai@example.com",
     address: "Birtamode, Jhapa",
-    message: "Prefers morning batch.",
-    totalFee: 22000,
-    amountPaid: 22000,
-    amountDue: 0,
-    paymentStatus: "paid",
-    enrollDate: "2026-05-05",
+    guardianName: "Bikash Rai",
+    guardianPhone: "9800000104",
+    courseName: "Office Package",
+    admissionDate: "2026-05-05T00:00:00.000Z",
+    feeAmount: 22000,
+    paymentStatus: "PAID",
+    remarks: "Prefers morning batch.",
     createdAt: "2026-05-05T11:20:00.000Z",
     updatedAt: "2026-05-05T11:20:00.000Z",
   },
@@ -80,14 +84,19 @@ export const mockStudents: Student[] = [
 
 export const mockDashboardStats: DashboardStats = {
   totalStudents: mockStudents.length,
-  activeCourses: 6,
-  revenue: mockStudents.reduce((total, student) => total + student.amountPaid, 0),
-  enrollments: 18,
+  paidStudents: mockStudents.filter((student) => student.paymentStatus === "PAID")
+    .length,
+  partialStudents: mockStudents.filter(
+    (student) => student.paymentStatus === "PARTIAL"
+  ).length,
+  unpaidStudents: mockStudents.filter(
+    (student) => student.paymentStatus === "UNPAID"
+  ).length,
 };
 
 export const mockAdminUser = {
   id: 1,
   name: "Admin User",
-  email: "admin@example.com",
+  username: "admin123",
   token: "mock-admin-token",
 };

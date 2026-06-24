@@ -3,22 +3,30 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import type { Request } from 'express';
-import { JWT_SECRET } from './config/jwt-secret';
+
+type RequestWithCookies = Request & {
+  cookies?: {
+    access_token?: string;
+  };
+};
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
         (request: Request) => {
-          return request?.cookies?.access_token;
+          const requestWithCookies = request as RequestWithCookies;
+          return requestWithCookies.cookies?.access_token ?? null;
         },
       ]),
-      secretOrKey: configService.get<string>('JWT_SECRET') ?? JWT_SECRET,
+      secretOrKey:
+        configService.get<string>('JWT_SECRET') ?? 'development-only-change-me',
     });
   }
 
-  validate(payload: { sub: string }) {
-    return { adminId: payload.sub };
+  validate(payload: { sub: string; username: string }) {
+    return { adminId: payload.sub, username: payload.username };
   }
 }

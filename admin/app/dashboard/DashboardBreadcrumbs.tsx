@@ -6,9 +6,9 @@ import { ChevronRight, Home } from 'lucide-react';
 
 const labelMap: Record<string, string> = {
   dashboard: 'Dashboard',
-  courses: 'Courses',
   students: 'Students',
-  settings: 'Settings',
+  new: 'Add Student',
+  edit: 'Edit',
 };
 
 function formatLabel(segment: string) {
@@ -49,7 +49,7 @@ export function DashboardBreadcrumbs() {
               ) : (
                 <Link
                   href={href}
-                  className="truncate capitalize text-gray-500 transition hover:text-blue-600"
+                  className="truncate capitalize text-slate-500 transition hover:text-purple-700"
                 >
                   {index === 0 ? (
                     <span className="inline-flex items-center gap-2">

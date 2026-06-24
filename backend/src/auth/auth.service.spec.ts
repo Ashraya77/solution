@@ -10,7 +10,10 @@ describe('AuthService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
-        { provide: PrismaService, useValue: { admin: { findUnique: jest.fn() } } },
+        {
+          provide: PrismaService,
+          useValue: { admin: { findUnique: jest.fn() } },
+        },
         { provide: JwtService, useValue: { sign: jest.fn() } },
       ],
     }).compile();

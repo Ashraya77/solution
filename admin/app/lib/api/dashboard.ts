@@ -1,11 +1,19 @@
-import { mockDashboardStats } from "../mockData";
-
-// Backend disabled while the API is being rebuilt.
-// import axiosInstance from "./axiosInstance";
+import { getStudents } from "../services/GetStudents";
 
 export const fetchAdminDashboard = async () => {
-  return mockDashboardStats;
+  const response = await getStudents();
+  const students = response.data;
 
-  // const res = await axiosInstance.get('/admin/dashboard');
-  // return res.data;
+  return {
+    totalStudents: students.length,
+    paidStudents: students.filter((student) => student.paymentStatus === "PAID")
+      .length,
+    partialStudents: students.filter(
+      (student) => student.paymentStatus === "PARTIAL"
+    ).length,
+    unpaidStudents: students.filter(
+      (student) => student.paymentStatus === "UNPAID"
+    ).length,
+    recentStudents: students.slice(0, 5),
+  };
 };

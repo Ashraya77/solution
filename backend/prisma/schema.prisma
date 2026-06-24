@@ -14,29 +14,36 @@ datasource db {
 }
 
 model Student {
-  id        Int      @id @default(autoincrement())
-  fullName  String
-  email     String
-  phone     String
-  dob       String
-  course    String
-  address   String
-  message   String
-  enrollDate  String @default("")
+  id            Int           @id @default(autoincrement())
+  fullName      String
+  dateOfBirth   DateTime
+  gender        String
+  phone         String
+  email         String        @unique
+  address       String
+  guardianName  String
+  guardianPhone String
+  courseName    String
+  admissionDate DateTime
+  feeAmount     Float
+  paymentStatus PaymentStatus @default(UNPAID)
+  remarks       String        @default("")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
-  totalFee    Float    @default(0)
-  amountPaid  Float    @default(0)
-  amountDue   Float    @default(0)
-  paymentStatus String @default("unpaid")
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
   @@map("students")
 }
 
 model Admin {
   id        String   @id @default(uuid())
-  email     String   @unique
+  username  String   @unique
   password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum PaymentStatus {
+  PAID
+  PARTIAL
+  UNPAID
 }
