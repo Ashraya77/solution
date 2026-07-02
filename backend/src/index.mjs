@@ -2,6 +2,7 @@ import express from 'express';
 import inquiryRouter from './routes/inquiry.route.js'
 import cookieParser from "cookie-parser";
 import adminRouter from "./routes/admin.route.js"
+import courseRouter from "./routes/course.route.js"
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -12,8 +13,8 @@ app.use("/api/inquiries", inquiryRouter);
 
 
 app.use("/api/auth", adminRouter);
-app.use("/api/auth", adminRouter)
 
+app.use("/api/course", courseRouter)
 
 
 app.listen(PORT, () => {

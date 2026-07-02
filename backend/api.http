@@ -1,0 +1,132 @@
+@baseUrl = http://localhost:5000
+@adminEmail = {{$dotenv ADMIN_EMAIL}}
+@adminPassword = {{$dotenv ADMIN_PASSWORD}}
+@stamp = {{$timestamp}}
+
+### Admin login
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+### Admin logout
+POST {{baseUrl}}/api/auth/logout
+
+### List courses
+GET {{baseUrl}}/api/course
+
+### Create course
+# @name createCourse
+POST {{baseUrl}}/api/course
+Content-Type: application/json
+
+{
+  "name": "REST Client Test Course {{stamp}}",
+  "description": "Created from api.http",
+  "duration": "1 month",
+  "fee": 5000
+}
+
+### Create course with legacy endpoint
+POST {{baseUrl}}/api/course/addCourse
+Content-Type: application/json
+
+{
+  "name": "Legacy REST Client Test Course {{stamp}}",
+  "description": "Created from /addCourse",
+  "duration": "15 days",
+  "fee": 2500
+}
+
+### Get course by id
+GET {{baseUrl}}/api/course/{{createCourse.response.body.$.id}}
+
+### Update course
+PATCH {{baseUrl}}/api/course/{{createCourse.response.body.$.id}}
+Content-Type: application/json
+
+{
+  "name": "REST Client Test Course Updated",
+  "description": "Updated from api.http",
+  "duration": "6 weeks",
+  "fee": 7500,
+  "isActive": true
+}
+
+### Delete course
+DELETE {{baseUrl}}/api/course/{{createCourse.response.body.$.id}}
+
+### Create public inquiry
+# @name createInquiry
+POST {{baseUrl}}/api/inquiries
+Content-Type: application/json
+
+{
+  "firstName": "REST",
+  "lastName": "Client",
+  "phone": "98{{stamp}}1",
+  "email": "rest.client.inquiry.{{stamp}}@example.com",
+  "address": "Kathmandu",
+  "message": "Interested in admission",
+  "courseId": 1
+}
+
+### List inquiries as admin
+GET {{baseUrl}}/api/inquiries
+
+### Get inquiry by id as admin
+GET {{baseUrl}}/api/inquiries/{{createInquiry.response.body.$.id}}
+
+### Update inquiry as admin
+PATCH {{baseUrl}}/api/inquiries/{{createInquiry.response.body.$.id}}
+Content-Type: application/json
+
+{
+  "status": "CONTACTED",
+  "message": "Contacted by admin"
+}
+
+### Reject inquiry as admin
+PATCH {{baseUrl}}/api/inquiries/{{createInquiry.response.body.$.id}}/reject
+
+### Delete inquiry as admin
+DELETE {{baseUrl}}/api/inquiries/{{createInquiry.response.body.$.id}}
+
+### Create course for accept/enroll flow
+# @name createEnrollmentCourse
+POST {{baseUrl}}/api/course
+Content-Type: application/json
+
+{
+  "name": "REST Client Enrollment Course {{stamp}}",
+  "description": "Course used for inquiry accept flow",
+  "duration": "2 months",
+  "fee": 9000
+}
+
+### Create inquiry for accept/enroll flow
+# @name createEnrollmentInquiry
+POST {{baseUrl}}/api/inquiries
+Content-Type: application/json
+
+{
+  "firstName": "Enroll",
+  "lastName": "Candidate",
+  "phone": "98{{stamp}}2",
+  "email": "rest.client.enroll.{{stamp}}@example.com",
+  "address": "Lalitpur",
+  "message": "Ready to enroll",
+  "courseId": {{createEnrollmentCourse.response.body.$.id}}
+}
+
+### Accept inquiry and create/reuse student enrollment
+PATCH {{baseUrl}}/api/inquiries/{{createEnrollmentInquiry.response.body.$.id}}/accept
+Content-Type: application/json
+
+{
+  "courseId": {{createEnrollmentCourse.response.body.$.id}}
+}
