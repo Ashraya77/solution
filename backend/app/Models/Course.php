@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable(['name', 'slug', 'description', 'duration', 'price', 'status'])]
 class Course extends Model
@@ -25,5 +26,10 @@ class Course extends Model
             ->withPivot(['id', 'enrolled_at', 'status'])
             ->withTimestamps()
             ->using(Enrollment::class);
+    }
+
+    public function subjects(): HasMany
+    {
+        return $this->hasMany(Subject::class);
     }
 }

@@ -26,6 +26,7 @@ Route::post('/logout', function () {
     return redirect()->route('login');
 })->name('logout')->middleware('auth');
 
+
 // Admin routes — protected by auth middleware
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');

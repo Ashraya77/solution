@@ -131,6 +131,9 @@
                                 </span>
                             </td>
                             <td class="px-5 py-3.5 text-right whitespace-nowrap">
+                                <button wire:click="openCertificate({{ $enrollment->id }})" class="text-indigo-600 hover:text-indigo-800 px-2 py-1 text-xs font-medium rounded transition-colors" title="Generate Certificate">
+                                    Certificate
+                                </button>
                                 <button
                                     wire:click="openView({{ $enrollment->id }})"
                                     class="text-gray-400 hover:text-indigo-600 p-1 rounded transition-colors"
@@ -434,6 +437,38 @@
     @endif
 
     {{-- ═══════════════════════ DELETE CONFIRM MODAL ══════════════════════ --}}
+    @if ($showCertificate && $certificateEnrollment)
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+            <div class="absolute inset-0 bg-black/40" wire:click="closeCertificate"></div>
+            <div class="relative bg-white rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200"><h2 class="text-base font-semibold text-gray-800">Generate Certificate</h2><button wire:click="closeCertificate" class="text-gray-400 hover:text-gray-600" aria-label="Close">Close</button></div>
+                <form wire:submit="generateCertificate" class="px-6 py-5 space-y-4">
+                    <div class="bg-gray-50 rounded-lg p-4 text-sm"><p><span class="text-gray-500">Student:</span> <span class="font-medium text-gray-800">{{ $certificateEnrollment->student->name }}</span></p><p class="mt-2"><span class="text-gray-500">Course:</span> <span class="font-medium text-gray-800">{{ $certificateEnrollment->course->name }}</span></p></div>
+                    @if ($certificateEnrollment->course->subjects->isEmpty())
+                        <p class="text-sm text-amber-700 bg-amber-50 rounded-lg p-3">Add subjects to this course before generating a certificate.</p>
+                    @else
+                        <div>
+                            <div class="grid grid-cols-2 gap-3 border-b border-gray-200 pb-2 text-xs font-semibold text-gray-500 uppercase tracking-wide"><span>Subject</span><span>Grade</span></div>
+                            <div class="divide-y divide-gray-100">
+                                @foreach ($certificateEnrollment->course->subjects as $subject)
+                                    <div class="grid grid-cols-2 gap-3 items-center py-3">
+                                        <label for="grade-{{ $subject->id }}" class="text-sm text-gray-800">{{ $subject->name }}</label>
+                                        <div>
+                                            <select id="grade-{{ $subject->id }}" wire:model="grades.{{ $subject->id }}" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 {{ $errors->has('grades.' . $subject->id) ? 'border-red-400' : 'border-gray-300' }}"><option value="">Select grade</option>@foreach (['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D', 'F'] as $grade)<option value="{{ $grade }}">{{ $grade }}</option>@endforeach</select>
+                                            @error('grades.' . $subject->id) <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @error('grades') <p class="text-red-500 text-xs">{{ $message }}</p> @enderror
+                    @endif
+                    <div class="flex justify-end gap-3 pt-2 border-t border-gray-100"><button type="button" wire:click="closeCertificate" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">Cancel</button><button type="submit" @disabled($certificateEnrollment->course->subjects->isEmpty()) class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 rounded-lg">Generate Certificate</button></div>
+                </form>
+            </div>
+        </div>
+    @endif
+
     @if ($showDeleteConfirm)
         <div
             class="fixed inset-0 z-50 flex items-center justify-center p-4"

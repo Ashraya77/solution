@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Student;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
@@ -42,6 +43,10 @@ class Enrollments extends Component
     public ?int $deletingId = null;
 
     // ── Notification ─────────────────────────────────────────────────────
+    public bool $showCertificate = false;
+    public ?int $certificateEnrollmentId = null;
+    public array $grades = [];
+
     public ?string $flash = null;
     public string $flashType = 'success';
 
@@ -174,6 +179,59 @@ class Enrollments extends Component
 
     // ── Helpers ──────────────────────────────────────────────────────────
 
+    public function openCertificate(int $id): void
+    {
+        $enrollment = Enrollment::with('course.subjects')->findOrFail($id);
+        $this->certificateEnrollmentId = $enrollment->id;
+        $this->grades = $enrollment->course->subjects->mapWithKeys(fn ($subject) => [$subject->id => ''])->all();
+        $this->resetValidation('grades');
+        $this->showCertificate = true;
+    }
+
+    public function closeCertificate(): void
+    {
+        $this->showCertificate = false;
+        $this->certificateEnrollmentId = null;
+        $this->grades = [];
+        $this->resetValidation('grades');
+    }
+
+    public function generateCertificate()
+    {
+        $enrollment = Enrollment::with(['student', 'course.subjects'])->findOrFail($this->certificateEnrollmentId);
+        $subjects = $enrollment->course->subjects;
+
+        if ($subjects->isEmpty()) {
+            $this->addError('grades', 'Add at least one subject to this course before generating a certificate.');
+            return;
+        }
+
+        $this->validate([
+            'grades' => ['required', 'array'],
+            'grades.*' => ['required', 'in:A+,A,A-,B+,B,B-,C+,C,C-,D,F'],
+        ]);
+
+        foreach ($subjects as $subject) {
+            if (empty($this->grades[$subject->id] ?? null)) {
+                $this->addError('grades.' . $subject->id, 'Select a grade for this subject.');
+                return;
+            }
+        }
+
+        $pdf = Pdf::loadView('certificates.certificate', [
+            'enrollment' => $enrollment,
+            'subjects' => $subjects,
+            'grades' => $this->grades,
+            'certificateDate' => now(),
+        ])->setPaper('a4', 'landscape');
+
+        return response()->streamDownload(
+            fn () => print($pdf->output()),
+            'certificate-' . $enrollment->student->id . '-' . $enrollment->course->id . '.pdf',
+            ['Content-Type' => 'application/pdf']
+        );
+    }
+
     private function rules(): array
     {
         return [
@@ -249,11 +307,14 @@ class Enrollments extends Component
         $students = Student::orderBy('name')->get(['id', 'name', 'email']);
         $courses  = Course::orderBy('name')->get(['id', 'name']);
 
+        $certificateEnrollment = $this->certificateEnrollmentId ? Enrollment::with(['student', 'course.subjects'])->find($this->certificateEnrollmentId) : null;
+
         return view('livewire.admin.enrollments', compact(
             'enrollments',
             'viewEnrollment',
             'students',
             'courses',
+            'certificateEnrollment',
         ));
     }
 }

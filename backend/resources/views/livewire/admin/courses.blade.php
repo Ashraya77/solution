@@ -118,6 +118,9 @@
                                 </span>
                             </td>
                             <td class="px-5 py-3.5 text-right whitespace-nowrap">
+                                <button wire:click="openSubjects({{ $course->id }})" class="text-indigo-600 hover:text-indigo-800 px-2 py-1 text-xs font-medium rounded transition-colors" title="Manage subjects">
+                                    Subjects
+                                </button>
                                 <button
                                     wire:click="openView({{ $course->id }})"
                                     class="text-gray-400 hover:text-indigo-600 p-1 rounded transition-colors"
@@ -420,6 +423,36 @@
     @endif
 
     {{-- ═══════════════════════ DELETE CONFIRM MODAL ══════════════════════ --}}
+    @if ($showSubjects && $subjectCourse)
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+            <div class="absolute inset-0 bg-black/40" wire:click="closeSubjects"></div>
+            <div class="relative bg-white rounded-xl shadow-xl w-full max-w-lg">
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                    <div><h2 class="text-base font-semibold text-gray-800">Manage Subjects</h2><p class="text-xs text-gray-500 mt-0.5">{{ $subjectCourse->name }}</p></div>
+                    <button wire:click="closeSubjects" class="text-gray-400 hover:text-gray-600" aria-label="Close">Close</button>
+                </div>
+                <div class="px-6 py-5">
+                    <form wire:submit="saveSubject" class="flex gap-2">
+                        <input wire:model="subjectName" type="text" placeholder="Subject name" class="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg">{{ $editingSubjectId ? 'Save' : 'Add' }}</button>
+                    </form>
+                    @error('subjectName') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    <div class="mt-5 divide-y divide-gray-100 border border-gray-200 rounded-lg overflow-hidden">
+                        @forelse ($subjectCourse->subjects as $subject)
+                            <div class="flex items-center justify-between gap-3 px-4 py-3">
+                                <span class="text-sm text-gray-800">{{ $subject->name }}</span>
+                                <div class="flex gap-2"><button wire:click="editSubject({{ $subject->id }})" class="text-xs font-medium text-indigo-600">Edit</button><button wire:click="deleteSubject({{ $subject->id }})" class="text-xs font-medium text-red-600">Delete</button></div>
+                            </div>
+                        @empty
+                            <p class="px-4 py-6 text-sm text-center text-gray-400">No subjects yet.</p>
+                        @endforelse
+                    </div>
+                    <div class="flex justify-end mt-5"><button wire:click="closeSubjects" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg">Close</button></div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     @if ($showDeleteConfirm)
         <div
             class="fixed inset-0 z-50 flex items-center justify-center p-4"

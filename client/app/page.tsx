@@ -4,6 +4,7 @@ import Review from "@/components/layout/Review";
 import TrainingFeatures from "@/components/layout/TrainingFeatures";
 import Courses from "@/components/section/Courses";
 import HeroSection from "@/components/section/HeroSection";
+import Chatbot from "@/components/ui/ChatBot";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
     <Gallery/>
     <Review/>
     <Enroll/>
+    <Chatbot/>
     </>
   );
 }

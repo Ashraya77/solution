@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Course;
+use App\Models\Subject;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
@@ -40,6 +41,11 @@ class Courses extends Component
     public ?int $deletingId = null;
 
     // ── Notification ─────────────────────────────────────────────────────
+    public bool $showSubjects = false;
+    public ?int $managingSubjectsCourseId = null;
+    public ?int $editingSubjectId = null;
+    public string $subjectName = '';
+
     public ?string $flash = null;
     public string $flashType = 'success'; // success | error
 
@@ -154,6 +160,57 @@ class Courses extends Component
 
     // ── Helpers ──────────────────────────────────────────────────────────
 
+    public function openSubjects(int $courseId): void
+    {
+        Course::findOrFail($courseId);
+        $this->managingSubjectsCourseId = $courseId;
+        $this->resetSubjectForm();
+        $this->showSubjects = true;
+    }
+
+    public function closeSubjects(): void
+    {
+        $this->showSubjects = false;
+        $this->managingSubjectsCourseId = null;
+        $this->resetSubjectForm();
+    }
+
+    public function editSubject(int $subjectId): void
+    {
+        $subject = Subject::where('course_id', $this->managingSubjectsCourseId)->findOrFail($subjectId);
+        $this->editingSubjectId = $subject->id;
+        $this->subjectName = $subject->name;
+    }
+
+    public function saveSubject(): void
+    {
+        $this->validate(['subjectName' => ['required', 'string', 'max:255']]);
+
+        if ($this->editingSubjectId) {
+            Subject::where('course_id', $this->managingSubjectsCourseId)->findOrFail($this->editingSubjectId)->update(['name' => $this->subjectName]);
+        } else {
+            Subject::create(['course_id' => $this->managingSubjectsCourseId, 'name' => $this->subjectName]);
+        }
+
+        $this->resetSubjectForm();
+    }
+
+    public function deleteSubject(int $subjectId): void
+    {
+        Subject::where('course_id', $this->managingSubjectsCourseId)->findOrFail($subjectId)->delete();
+
+        if ($this->editingSubjectId === $subjectId) {
+            $this->resetSubjectForm();
+        }
+    }
+
+    private function resetSubjectForm(): void
+    {
+        $this->editingSubjectId = null;
+        $this->subjectName = '';
+        $this->resetValidation('subjectName');
+    }
+
     private function rules(): array
     {
         return [
@@ -223,6 +280,8 @@ class Courses extends Component
                     ->find($this->viewingId)
             : null;
 
-        return view('livewire.admin.courses', compact('courses', 'viewCourse'));
+        $subjectCourse = $this->managingSubjectsCourseId ? Course::with(['subjects' => fn ($query) => $query->orderBy('name')])->find($this->managingSubjectsCourseId) : null;
+
+        return view('livewire.admin.courses', compact('courses', 'viewCourse', 'subjectCourse'));
     }
 }
