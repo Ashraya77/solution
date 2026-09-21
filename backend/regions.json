@@ -1,0 +1,344 @@
+{
+  "version": 1,
+  "coordinate_system": {
+    "origin": "top-left",
+    "units": "mm",
+    "page": {
+      "width_mm": 210,
+      "height_mm": 297
+    },
+    "source_image": {
+      "path": "public/images/certificate-bg.png",
+      "actual_pixels": {
+        "width": 1654,
+        "height": 2339
+      },
+      "declared_reference_pixels": {
+        "width": 2480,
+        "height": 3508
+      },
+      "mm_per_pixel": {
+        "x": 0.126965,
+        "y": 0.126977
+      },
+      "note": "The checked-in image is a 1654x2339 (approximately 200 DPI) rendition of the stated 2480x3508 A4 artwork. All measurements below are in physical A4 millimetres and remain valid for either rendition."
+    }
+  },
+  "defaults": {
+    "font_family": "Times New Roman, DejaVu Serif, serif",
+    "text_color": "#062E73",
+    "vertical_alignment": "middle",
+    "overflow": "clip"
+  },
+  "regions": {
+    "student_photo": {
+      "kind": "image",
+      "bbox_mm": {
+        "x": 86.7,
+        "y": 45.1,
+        "width": 36.1,
+        "height": 40.0
+      },
+      "reference_pixels": {
+        "x": 683,
+        "y": 355,
+        "width": 284,
+        "height": 315
+      },
+      "fit": "cover",
+      "alignment": {
+        "horizontal": "center",
+        "vertical": "center"
+      },
+      "border": {
+        "color": "#7A7A7A",
+        "width_mm": 0.13
+      }
+    },
+    "student_name_main": {
+      "kind": "text",
+      "bbox_mm": {
+        "x": 30.0,
+        "y": 38.5,
+        "width": 150.0,
+        "height": 5.9
+      },
+      "reference_pixels": {
+        "x": 236,
+        "y": 303,
+        "width": 1181,
+        "height": 46
+      },
+      "font": {
+        "family": "Times New Roman, DejaVu Serif, serif",
+        "size_pt": 24,
+        "weight": "bold",
+        "color": "#062E73"
+      },
+      "alignment": {
+        "horizontal": "center",
+        "vertical": "middle"
+      },
+      "max_lines": 1
+    },
+    "course_dates": {
+      "kind": "text",
+      "bbox_mm": {
+        "x": 47.0,
+        "y": 122.2,
+        "width": 116.0,
+        "height": 6.8
+      },
+      "reference_pixels": {
+        "x": 370,
+        "y": 962,
+        "width": 914,
+        "height": 54
+      },
+      "font": {
+        "family": "Times New Roman, DejaVu Serif, serif",
+        "size_pt": 14,
+        "weight": "normal",
+        "color": "#062E73"
+      },
+      "alignment": {
+        "horizontal": "center",
+        "vertical": "middle"
+      },
+      "max_lines": 1,
+      "suggested_format": "dd MMMM yyyy to dd MMMM yyyy"
+    },
+    "course_name": {
+      "kind": "text",
+      "bbox_mm": {
+        "x": 42.0,
+        "y": 136.2,
+        "width": 126.0,
+        "height": 7.8
+      },
+      "reference_pixels": {
+        "x": 331,
+        "y": 1073,
+        "width": 992,
+        "height": 61
+      },
+      "font": {
+        "family": "Times New Roman, DejaVu Serif, serif",
+        "size_pt": 24,
+        "weight": "normal",
+        "color": "#00A651"
+      },
+      "alignment": {
+        "horizontal": "center",
+        "vertical": "middle"
+      },
+      "max_lines": 1
+    },
+    "info_table": {
+      "kind": "table",
+      "bbox_mm": {
+        "x": 13.5,
+        "y": 152.4,
+        "width": 186.4,
+        "height": 25.1
+      },
+      "reference_pixels": {
+        "x": 106,
+        "y": 1200,
+        "width": 1468,
+        "height": 198
+      },
+      "font": {
+        "family": "Times New Roman, DejaVu Serif, serif",
+        "size_pt": 12,
+        "weight": "normal",
+        "color": "#062E73"
+      },
+      "alignment": {
+        "horizontal": "left",
+        "vertical": "middle"
+      },
+      "values": {
+        "student_name": {
+          "bbox_mm": {
+            "x": 48.0,
+            "y": 152.7,
+            "width": 151.2,
+            "height": 5.7
+          },
+          "reference_pixels": {
+            "x": 378,
+            "y": 1202,
+            "width": 1191,
+            "height": 45
+          },
+          "font_size_pt": 12,
+          "alignment": "left"
+        },
+        "date_of_birth": {
+          "bbox_mm": {
+            "x": 48.0,
+            "y": 159.0,
+            "width": 41.8,
+            "height": 5.5
+          },
+          "reference_pixels": {
+            "x": 378,
+            "y": 1252,
+            "width": 329,
+            "height": 43
+          },
+          "font_size_pt": 11,
+          "alignment": "left"
+        },
+        "registration_no": {
+          "bbox_mm": {
+            "x": 125.7,
+            "y": 159.0,
+            "width": 16.4,
+            "height": 5.5
+          },
+          "reference_pixels": {
+            "x": 990,
+            "y": 1252,
+            "width": 129,
+            "height": 43
+          },
+          "font_size_pt": 10.5,
+          "alignment": "center"
+        },
+        "exam_code": {
+          "bbox_mm": {
+            "x": 169.0,
+            "y": 159.0,
+            "width": 30.4,
+            "height": 5.5
+          },
+          "reference_pixels": {
+            "x": 1331,
+            "y": 1252,
+            "width": 239,
+            "height": 43
+          },
+          "font_size_pt": 11,
+          "alignment": "center"
+        },
+        "father_name": {
+          "bbox_mm": {
+            "x": 48.0,
+            "y": 165.1,
+            "width": 151.2,
+            "height": 5.6
+          },
+          "reference_pixels": {
+            "x": 378,
+            "y": 1300,
+            "width": 1191,
+            "height": 44
+          },
+          "font_size_pt": 12,
+          "alignment": "left"
+        },
+        "address": {
+          "bbox_mm": {
+            "x": 48.0,
+            "y": 171.5,
+            "width": 151.2,
+            "height": 5.5
+          },
+          "reference_pixels": {
+            "x": 378,
+            "y": 1350,
+            "width": 1191,
+            "height": 43
+          },
+          "font_size_pt": 11,
+          "alignment": "left",
+          "max_lines": 1
+        }
+      }
+    },
+    "marks_table": {
+      "kind": "dynamic-table-container",
+      "bbox_mm": {
+        "x": 11.5,
+        "y": 177.8,
+        "width": 188.5,
+        "height": 58.6
+      },
+      "reference_pixels": {
+        "x": 91,
+        "y": 1400,
+        "width": 1485,
+        "height": 461
+      },
+      "font": {
+        "family": "Times New Roman, DejaVu Serif, serif",
+        "size_pt": 11,
+        "weight": "normal",
+        "color": "#4B4B4B"
+      },
+      "alignment": {
+        "horizontal": "left",
+        "vertical": "middle"
+      },
+      "layout": {
+        "header_height_mm": 6.2,
+        "row_height_mm": 6.4,
+        "footer_height_mm": 7.5,
+        "maximum_rows": 7,
+        "columns": [
+          {
+            "key": "sn",
+            "x_mm": 11.5,
+            "width_mm": 23.6,
+            "alignment": "center"
+          },
+          {
+            "key": "subject",
+            "x_mm": 35.2,
+            "width_mm": 125.6,
+            "alignment": "left"
+          },
+          {
+            "key": "grade",
+            "x_mm": 160.9,
+            "width_mm": 39.1,
+            "alignment": "center"
+          }
+        ],
+        "header_background": "#666666",
+        "header_text_color": "#FFFFFF",
+        "alternate_row_background": "#C6EDF9",
+        "footer_background": "#F0F0F0"
+      }
+    },
+    "date_of_issue": {
+      "kind": "text",
+      "bbox_mm": {
+        "x": 109.0,
+        "y": 280.6,
+        "width": 72.0,
+        "height": 6.7
+      },
+      "reference_pixels": {
+        "x": 859,
+        "y": 2210,
+        "width": 567,
+        "height": 53
+      },
+      "font": {
+        "family": "Arial, DejaVu Sans, sans-serif",
+        "size_pt": 14,
+        "weight": "bold",
+        "color": "#062E73"
+      },
+      "alignment": {
+        "horizontal": "left",
+        "vertical": "middle"
+      },
+      "max_lines": 1,
+      "suggested_format": "dd MMMM yyyy"
+    }
+  }
+}

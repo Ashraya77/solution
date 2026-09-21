@@ -206,6 +206,13 @@
                         @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
+                    {{-- Father name --}}
+                    <div>
+                        <label for="student-father-name" class="block text-sm font-medium text-gray-700 mb-1">Father Name <span class="text-gray-400 font-normal">(optional)</span></label>
+                        <input id="student-father-name" type="text" wire:model="father_name" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 {{ $errors->has('father_name') ? 'border-red-400' : 'border-gray-300' }}" autocomplete="off">
+                        @error('father_name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+
                     {{-- Phone --}}
                     <div>
                         <label for="student-phone" class="block text-sm font-medium text-gray-700 mb-1">
@@ -238,6 +245,13 @@
                         @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
+                    {{-- Registration number --}}
+                    <div>
+                        <label for="student-registration-no" class="block text-sm font-medium text-gray-700 mb-1">Registration No. <span class="text-gray-400 font-normal">(optional)</span></label>
+                        <input id="student-registration-no" type="text" wire:model="registration_no" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 {{ $errors->has('registration_no') ? 'border-red-400' : 'border-gray-300' }}" autocomplete="off">
+                        @error('registration_no') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+
                     {{-- Date of birth --}}
                     <div>
                         <label for="student-dob" class="block text-sm font-medium text-gray-700 mb-1">
@@ -253,6 +267,13 @@
                         @error('date_of_birth') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
+                    {{-- Date of birth (BS) --}}
+                    <div>
+                        <label for="student-dob-bs" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth (BS) <span class="text-gray-400 font-normal">(optional)</span></label>
+                        <input id="student-dob-bs" type="text" wire:model="dob_bs" placeholder="2066/07/29" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 {{ $errors->has('dob_bs') ? 'border-red-400' : 'border-gray-300' }}" autocomplete="off">
+                        @error('dob_bs') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+
                     {{-- Address --}}
                     <div>
                         <label for="student-address" class="block text-sm font-medium text-gray-700 mb-1">
@@ -266,6 +287,19 @@
                                    {{ $errors->has('address') ? 'border-red-400' : 'border-gray-300' }}"
                         ></textarea>
                         @error('address') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+
+                    {{-- Photo --}}
+                    <div>
+                        <label for="student-photo" class="block text-sm font-medium text-gray-700 mb-1">Photo <span class="text-gray-400 font-normal">(optional, max 2 MB)</span></label>
+                        <input id="student-photo" type="file" wire:model="photo" accept="image/*" class="w-full border rounded-lg px-3 py-2 text-sm text-gray-600 file:mr-3 file:rounded-md file:border-0 file:bg-indigo-50 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-indigo-700 hover:file:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 {{ $errors->has('photo') ? 'border-red-400' : 'border-gray-300' }}">
+                        @error('photo') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+
+                        @if ($photo)
+                            <img src="{{ $photo->temporaryUrl() }}" alt="New student photo preview" class="mt-3 h-20 w-20 rounded-lg border border-gray-200 object-cover">
+                        @elseif ($currentPhoto)
+                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($currentPhoto) }}" alt="Current student photo" class="mt-3 h-20 w-20 rounded-lg border border-gray-200 object-cover">
+                        @endif
                     </div>
 
                     {{-- Courses --}}
@@ -374,9 +408,13 @@
                 <div class="px-6 py-5 space-y-4">
                     {{-- Avatar + name --}}
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg font-bold uppercase flex-shrink-0">
-                            {{ substr($viewStudent->name, 0, 1) }}
-                        </div>
+                        @if ($viewStudent->photo)
+                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($viewStudent->photo) }}" alt="{{ $viewStudent->name }} photo" class="w-12 h-12 rounded-full border border-gray-200 object-cover flex-shrink-0">
+                        @else
+                            <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg font-bold uppercase flex-shrink-0">
+                                {{ substr($viewStudent->name, 0, 1) }}
+                            </div>
+                        @endif
                         <div>
                             <p class="font-semibold text-gray-800 text-base">{{ $viewStudent->name }}</p>
                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium mt-0.5
@@ -393,12 +431,24 @@
                             <dd class="text-gray-800 font-medium">{{ $viewStudent->phone }}</dd>
                         </div>
                         <div>
+                            <dt class="text-gray-500 text-xs font-medium uppercase tracking-wide mb-0.5">Father Name</dt>
+                            <dd class="text-gray-800">{{ $viewStudent->father_name ?? '-' }}</dd>
+                        </div>
+                        <div>
                             <dt class="text-gray-500 text-xs font-medium uppercase tracking-wide mb-0.5">Email</dt>
                             <dd class="text-gray-800">{{ $viewStudent->email ?? '—' }}</dd>
                         </div>
                         <div>
+                            <dt class="text-gray-500 text-xs font-medium uppercase tracking-wide mb-0.5">Registration No.</dt>
+                            <dd class="text-gray-800">{{ $viewStudent->registration_no ?? '-' }}</dd>
+                        </div>
+                        <div>
                             <dt class="text-gray-500 text-xs font-medium uppercase tracking-wide mb-0.5">Date of Birth</dt>
                             <dd class="text-gray-800">{{ $viewStudent->date_of_birth?->format('d M Y') ?? '—' }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-gray-500 text-xs font-medium uppercase tracking-wide mb-0.5">Date of Birth (BS)</dt>
+                            <dd class="text-gray-800">{{ $viewStudent->dob_bs ?? '-' }}</dd>
                         </div>
                         <div>
                             <dt class="text-gray-500 text-xs font-medium uppercase tracking-wide mb-0.5">Joined</dt>

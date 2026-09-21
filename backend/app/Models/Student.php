@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['name', 'email', 'phone', 'address', 'date_of_birth', 'status'])]
+#[Fillable(['name', 'father_name', 'email', 'registration_no', 'phone', 'address', 'photo', 'date_of_birth', 'dob_bs', 'status'])]
 class Student extends Model
 {
     use HasFactory;
@@ -25,5 +26,10 @@ class Student extends Model
             ->withPivot(['id', 'enrolled_at', 'status'])
             ->withTimestamps()
             ->using(Enrollment::class);
+    }
+
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(Certificate::class);
     }
 }
