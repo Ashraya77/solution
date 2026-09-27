@@ -1,216 +1,190 @@
-"use client"
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Loader2, Send, CheckCircle2, XCircle } from 'lucide-react';
-import { createStudent } from '@/lib/apiClient';
+"use client";
+
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import axios from "axios";
+import { CheckCircle2, Loader2, Send, XCircle } from "lucide-react";
+import {
+  getPublicCourses,
+  submitEnrollment,
+  type CourseOption,
+} from "@/lib/apiClient";
 
 const formSchema = z.object({
-  fullName: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Valid phone number required"),
-  dob: z.string().min(1, "Date of birth is required"),
-  course: z.string().min(1, "Please select a course"),
-  address: z.string().min(5, "Please enter your full address"),
-  message: z.string().min(10, "Please tell us a bit more (min 10 chars)"),
+  name: z.string().trim().min(2, "Enter your full name.").max(255),
+  father_name: z.string().trim().max(255).optional(),
+  email: z.string().trim().email("Enter a valid email address.").or(z.literal("")),
+  phone: z.string().trim().min(7, "Enter a valid phone number.").max(50),
+  address: z.string().trim().max(500).optional(),
+  date_of_birth: z.string().optional(),
+  course_id: z.string().min(1, "Select a course."),
 });
 
-type FormData = z.infer<typeof formSchema>;
+type EnrollmentFormValues = z.infer<typeof formSchema>;
 
-const Page = () => {
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: 'success' | 'error' | null;
-    message: string;
-  }>({ type: null, message: '' });
+type SubmissionStatus = {
+  type: "success" | "error" | null;
+  message: string;
+};
+
+const emptyToUndefined = (value: string | undefined) => value?.trim() || undefined;
+
+export default function EnrollmentPage() {
+  const [courses, setCourses] = useState<CourseOption[]>([]);
+  const [coursesError, setCoursesError] = useState("");
+  const [loadingCourses, setLoadingCourses] = useState(true);
+  const [submitStatus, setSubmitStatus] = useState<SubmissionStatus>({
+    type: null,
+    message: "",
+  });
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<FormData>({
+  } = useForm<EnrollmentFormValues>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      father_name: "",
+      email: "",
+      phone: "",
+      address: "",
+      date_of_birth: "",
+      course_id: "",
+    },
   });
 
-  const onSubmit = async (data: FormData) => {
-    setSubmitStatus({ type: null, message: '' });
+  useEffect(() => {
+    let active = true;
+
+    void getPublicCourses()
+      .then((availableCourses) => {
+        if (active) setCourses(availableCourses);
+      })
+      .catch(() => {
+        if (active) {
+          setCoursesError("Courses could not be loaded. Please try again shortly.");
+        }
+      })
+      .finally(() => {
+        if (active) setLoadingCourses(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const onSubmit = async (data: EnrollmentFormValues) => {
+    setSubmitStatus({ type: null, message: "" });
 
     try {
-      const response = await createStudent(data);
-      
-      setSubmitStatus({
-        type: 'success',
-        message: response.message || 'Application submitted successfully!',
+      const response = await submitEnrollment({
+        name: data.name.trim(),
+        father_name: emptyToUndefined(data.father_name),
+        email: emptyToUndefined(data.email),
+        phone: data.phone.trim(),
+        address: emptyToUndefined(data.address),
+        date_of_birth: emptyToUndefined(data.date_of_birth),
+        course_id: Number(data.course_id),
       });
-      
+
+      setSubmitStatus({ type: "success", message: response.message });
       reset();
-      
-      // Auto-hide success message after 5 seconds
-      setTimeout(() => {
-        setSubmitStatus({ type: null, message: '' });
-      }, 5000);
-      
-    } catch (error: any) {
-      console.error('Error submitting form:', error);
-      
-      const errorMessage = 
-        error.response?.data?.message || 
-        error.message || 
-        'Something went wrong. Please try again.';
-      
-      setSubmitStatus({
-        type: 'error',
-        message: errorMessage,
-      });
+    } catch (error: unknown) {
+      const message = axios.isAxiosError<{ message?: string }>(error)
+        ? error.response?.data?.message || "Your enrollment could not be submitted. Please try again."
+        : "Your enrollment could not be submitted. Please try again.";
+
+      setSubmitStatus({ type: "error", message });
     }
   };
 
+  const fieldClass = (hasError: boolean) =>
+    hasError
+      ? "w-full rounded-xl border border-red-500 bg-red-50 px-4 py-3 text-slate-900 outline-none"
+      : "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10";
+
   return (
-    <div className="max-w-xl mx-auto p-8 bg-white rounded-3xl shadow-xl border border-slate-100 mt-20 mb-10">
-      <div className="mb-8">
-        <h2 className="text-3xl font-black text-slate-900">Course Enrollment</h2>
-        <p className="text-slate-500">Fill in your details to apply for admission.</p>
-      </div>
-
-      {/* Success/Error Message */}
-      {submitStatus.type && (
-        <div
-          className={`mb-6 p-4 rounded-xl flex items-start gap-3 ${
-            submitStatus.type === 'success'
-              ? 'bg-green-50 text-green-800 border border-green-200'
-              : 'bg-red-50 text-red-800 border border-red-200'
-          }`}
-        >
-          {submitStatus.type === 'success' ? (
-            <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0" />
-          ) : (
-            <XCircle className="w-5 h-5 mt-0.5 shrink-0" />
-          )}
-          <p className="text-sm font-medium">{submitStatus.message}</p>
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        
-        {/* Name Field */}
-        <div>
-          <label className="block text-sm font-bold text-slate-700 mb-2 px-1">Full Name</label>
-          <input
-            {...register("fullName")}
-            className={`w-full px-4 py-3 rounded-xl border transition-all text-black outline-none ${
-              errors.fullName ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10"
-            }`}
-            placeholder="John Doe"
-          />
-          {errors.fullName && <p className="mt-1 text-xs font-medium text-red-500 px-1">{errors.fullName.message}</p>}
+    <main className="mx-auto my-16 max-w-2xl px-4 sm:px-6">
+      <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-xl sm:p-8">
+        <div className="mb-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-600">Admissions</p>
+          <h1 className="mt-2 text-3xl font-black text-slate-900">Enroll in a course</h1>
+          <p className="mt-2 text-slate-500">Submit your details and our team will follow up about your enrollment.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Email Field */}
+        {submitStatus.type && (
+          <div role="alert" className={submitStatus.type === "success" ? "mb-6 flex gap-3 rounded-xl border border-green-200 bg-green-50 p-4 text-green-800" : "mb-6 flex gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-red-800"}>
+            {submitStatus.type === "success" ? <CheckCircle2 className="mt-0.5 size-5 shrink-0" /> : <XCircle className="mt-0.5 size-5 shrink-0" />}
+            <p className="text-sm font-medium">{submitStatus.message}</p>
+          </div>
+        )}
+
+        {coursesError && <p role="alert" className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-800">{coursesError}</p>}
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
           <div>
-            <label className="block text-sm font-bold text-slate-700 mb-2 px-1">Email Address</label>
-            <input
-              {...register("email")}
-              type="email"
-              className={`w-full text-black px-4 py-3 rounded-xl border transition-all outline-none ${
-                errors.email ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10"
-              }`}
-              placeholder="john@example.com"
-            />
-            {errors.email && <p className="mt-1 text-xs font-medium text-red-500 px-1">{errors.email.message}</p>}
+            <label htmlFor="name" className="mb-2 block text-sm font-bold text-slate-700">Full name *</label>
+            <input id="name" autoComplete="name" {...register("name")} className={fieldClass(Boolean(errors.name))} placeholder="Your full name" />
+            {errors.name && <p className="mt-1 text-xs font-medium text-red-600">{errors.name.message}</p>}
           </div>
 
-          {/* Phone Field */}
-          <div>
-            <label className="block text-sm font-bold text-slate-700 mb-2 px-1">Phone Number</label>
-            <input
-              {...register("phone")}
-              className={`w-full text-black px-4 py-3 rounded-xl border transition-all outline-none ${
-                errors.phone ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10"
-              }`}
-              placeholder="+1 234 567 890"
-            />
-            {errors.phone && <p className="mt-1 text-xs font-medium text-red-500 px-1">{errors.phone.message}</p>}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Date of Birth Field */}
-          <div>
-            <label className="block text-sm font-bold text-slate-700 mb-2 px-1">Date of Birth</label>
-            <input
-              type="date"
-              {...register("dob")}
-              className={`w-full text-black  px-4 py-3 rounded-xl border transition-all outline-none ${
-                errors.dob ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10"
-              }`}
-            />
-            {errors.dob && <p className="mt-1 text-xs font-medium text-red-500 px-1">{errors.dob.message}</p>}
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label htmlFor="phone" className="mb-2 block text-sm font-bold text-slate-700">Phone number *</label>
+              <input id="phone" autoComplete="tel" inputMode="tel" {...register("phone")} className={fieldClass(Boolean(errors.phone))} placeholder="98XXXXXXXX" />
+              {errors.phone && <p className="mt-1 text-xs font-medium text-red-600">{errors.phone.message}</p>}
+            </div>
+            <div>
+              <label htmlFor="email" className="mb-2 block text-sm font-bold text-slate-700">Email <span className="font-normal text-slate-400">(optional)</span></label>
+              <input id="email" type="email" autoComplete="email" {...register("email")} className={fieldClass(Boolean(errors.email))} placeholder="you@example.com" />
+              {errors.email && <p className="mt-1 text-xs font-medium text-red-600">{errors.email.message}</p>}
+            </div>
           </div>
 
-          {/* Course Selection */}
           <div>
-            <label className="block text-sm font-bold text-slate-700 mb-2 px-1">Selected Course</label>
-            <select
-              {...register("course")}
-              className={`w-full text-black px-4 py-3 rounded-xl border transition-all outline-none bg-white ${
-                errors.course ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10"
-              }`}
-            >
-              <option value="">Select Course</option>
-              <option value="web-dev">Web Development</option>
-              <option value="python">Python Data Science</option>
-              <option value="cyber-security">Cyber Security</option>
+            <label htmlFor="course_id" className="mb-2 block text-sm font-bold text-slate-700">Course *</label>
+            <select id="course_id" disabled={loadingCourses || courses.length === 0} {...register("course_id")} className={fieldClass(Boolean(errors.course_id))}>
+              <option value="">{loadingCourses ? "Loading courses…" : "Select a course"}</option>
+              {courses.map((course) => (
+                <option key={course.id} value={course.id}>
+                  {course.name}{course.duration ? " — " + course.duration : ""}
+                </option>
+              ))}
             </select>
-            {errors.course && <p className="mt-1 text-xs font-medium text-red-500 px-1">{errors.course.message}</p>}
+            {errors.course_id && <p className="mt-1 text-xs font-medium text-red-600">{errors.course_id.message}</p>}
           </div>
-        </div>
 
-        {/* Address Field */}
-        <div>
-          <label className="block text-sm font-bold text-slate-700 mb-2 px-1">Home Address</label>
-          <input
-            {...register("address")}
-            className={`w-full px-4 text-black py-3 rounded-xl border transition-all outline-none ${
-              errors.address ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10"
-            }`}
-            placeholder="Street address, City, Zip Code"
-          />
-          {errors.address && <p className="mt-1 text-xs font-medium text-red-500 px-1">{errors.address.message}</p>}
-        </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label htmlFor="father_name" className="mb-2 block text-sm font-bold text-slate-700">Parent / guardian name <span className="font-normal text-slate-400">(optional)</span></label>
+              <input id="father_name" autoComplete="name" {...register("father_name")} className={fieldClass(Boolean(errors.father_name))} placeholder="Parent or guardian name" />
+              {errors.father_name && <p className="mt-1 text-xs font-medium text-red-600">{errors.father_name.message}</p>}
+            </div>
+            <div>
+              <label htmlFor="date_of_birth" className="mb-2 block text-sm font-bold text-slate-700">Date of birth <span className="font-normal text-slate-400">(optional)</span></label>
+              <input id="date_of_birth" type="date" autoComplete="bday" {...register("date_of_birth")} className={fieldClass(Boolean(errors.date_of_birth))} />
+              {errors.date_of_birth && <p className="mt-1 text-xs font-medium text-red-600">{errors.date_of_birth.message}</p>}
+            </div>
+          </div>
 
-        {/* Message Field */}
-        <div>
-          <label className="block text-sm font-bold text-slate-700 mb-2 px-1">Additional Notes</label>
-          <textarea
-            {...register("message")}
-            rows={3}
-            className={`w-full px-4 py-3 text-black rounded-xl border transition-all outline-none resize-none ${
-              errors.message ? "border-red-500 bg-red-50" : "border-slate-200 focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10"
-            }`}
-            placeholder="Tell us about your background or requirements..."
-          />
-          {errors.message && <p className="mt-1 text-xs font-medium text-red-500 px-1">{errors.message.message}</p>}
-        </div>
+          <div>
+            <label htmlFor="address" className="mb-2 block text-sm font-bold text-slate-700">Address <span className="font-normal text-slate-400">(optional)</span></label>
+            <textarea id="address" rows={3} autoComplete="street-address" {...register("address")} className={fieldClass(Boolean(errors.address))} placeholder="Your current address" />
+            {errors.address && <p className="mt-1 text-xs font-medium text-red-600">{errors.address.message}</p>}
+          </div>
 
-        {/* Submit Button */}
-        <button
-          disabled={isSubmitting}
-          type="submit"
-          className="w-full flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-bold py-4 rounded-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-sky-100"
-        >
-          {isSubmitting ? (
-            <Loader2 className="animate-spin" size={20} />
-          ) : (
-            <>
-              Submit Application <Send size={18} />
-            </>
-          )}
-        </button>
-      </form>
-    </div>
+          <button disabled={isSubmitting || loadingCourses || courses.length === 0} type="submit" className="flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 py-4 font-bold text-white shadow-lg shadow-sky-100 transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70">
+            {isSubmitting ? <Loader2 className="size-5 animate-spin" /> : <Send className="size-5" />}
+            {isSubmitting ? "Submitting…" : "Submit enrollment"}
+          </button>
+        </form>
+      </div>
+    </main>
   );
-};
-
-export default Page;
+}

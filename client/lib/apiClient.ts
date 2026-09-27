@@ -1,51 +1,47 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:5000';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
-export interface StudentFormData {
-  fullName: string;
-  email: string;
-  phone: string;
-  dob: string;
-  course: string;
-  address: string;
-  message: string;
-}
-
-export interface Student extends StudentFormData {
+export interface CourseOption {
   id: number;
-  createdAt: string;
-  updatedAt: string;
+  name: string;
+  description: string | null;
+  duration: string | null;
+  price: string | null;
 }
 
-// Create student
-export const createStudent = async (data: StudentFormData) => {
-  const response = await api.post('/students', data);
-  return response.data;
+export interface EnrollmentData {
+  name: string;
+  father_name?: string;
+  email?: string;
+  phone: string;
+  address?: string;
+  date_of_birth?: string;
+  course_id: number;
+}
+
+export interface EnrollmentResponse {
+  message: string;
+  data: {
+    student_id: number;
+    course_id: number;
+  };
+}
+
+export const getPublicCourses = async (): Promise<CourseOption[]> => {
+  const response = await api.get<{ data: CourseOption[] }>("/api/courses");
+  return response.data.data;
 };
 
-// Get all students
-export const getAllStudents = async () => {
-  const response = await api.get('/students');
-  return response.data;
-};
-
-// Get single student
-export const getStudent = async (id: number) => {
-  const response = await api.get(`/students/${id}`);
-  return response.data;
-};
-
-// Delete student
-export const deleteStudent = async (id: number) => {
-  const response = await api.delete(`/students/${id}`);
+export const submitEnrollment = async (
+  data: EnrollmentData,
+): Promise<EnrollmentResponse> => {
+  const response = await api.post<EnrollmentResponse>("/api/enrollments", data);
   return response.data;
 };
 
