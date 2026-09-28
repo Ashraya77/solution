@@ -52,11 +52,6 @@ export default function Review() {
               </div>
               
               <div className="mt-6">
-                <img
-                  src={r.img}
-                  alt={r.name}
-                  className="w-16 h-16 rounded-full object-cover shadow-md border-2 border-border-subtle mx-auto mb-2"
-                />
                 <h2 className="font-semibold text-foreground text-sm md:text-base">
                   <span className="italic">{r.name}</span>{" "}
                   <br className="sm:hidden" />

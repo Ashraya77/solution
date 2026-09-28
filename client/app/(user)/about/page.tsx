@@ -10,7 +10,7 @@ const organization = {
   name: "Solution Computer House",
   address: "Pokhara-25, Hemja, Gandaki Province, Nepal",
   phone: "+977 (XX) XXX-XXXX",
-  email: "info@solutioncomputerhouse.com",
+  email: "solutioncomputerhouse@gmail.com.com",
   mapLink: "https://maps.app.goo.gl/YourActualMapLinkHere",
 };
 
@@ -25,20 +25,19 @@ type Owner = {
 
 const owners: Owner[] = [
   {
-    name: "Owner Name",
+    name: "Ashish Darshan",
     role: "Founder & Academic Director",
     bio: "Leads the academic direction of the institute, with a focus on practical course structure, student guidance, and consistent learning outcomes.",
-    image:
-      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=700&q=85",
+    image: "/owner1.jpg",
     imageAlt: "Portrait placeholder for institution owner",
     objectPosition: "object-[50%_35%]",
   },
   {
-    name: "Owner Name",
+    name: "Yashoda CK",
     role: "Managing Director",
     bio: "Oversees operations, student support, partnerships, and the day-to-day systems that keep training focused and professionally delivered.",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=85",
+    image: "/owner2.jpg",
+
     imageAlt: "Portrait placeholder for institution owner",
     objectPosition: "object-[50%_35%]",
   },

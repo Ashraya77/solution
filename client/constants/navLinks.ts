@@ -25,16 +25,16 @@ export const navLinks = [
 ];
 
 export const reviews = [
-  { id: 1, name: "Aarav Sharma", city: "Pokhara", review: "The trip was well-organized, and I loved how friendly everyone was. Definitely coming back!", img: "/1.jpg" },
-  { id: 2, name: "Sofia Martinez", city: "Kathmandu", review: "Beautiful views and unforgettable experiences. I enjoyed every single moment.", img: "/2.jpg" },
-  { id: 3, name: "Liam Johnson", city: "Chitwan", review: "A perfect blend of adventure and relaxation. Highly recommend to travelers of all ages.", img: "/3.jpg" },
-  { id: 4, name: "Maya Thapa", city: "Bhaktapur", review: "The cultural richness of this place was amazing. I felt so connected to the local traditions.", img: "/4.jpg" },
-  { id: 5, name: "Ethan Wilson", city: "Butwal", review: "Everything from food to transport was smooth. Super impressed with the planning.", img: "/5.jpg" },
-  { id: 6, name: "Isabella Rossi", city: "Dharan", review: "The people here made me feel so welcome. It’s one of the best trips I’ve ever had.", img: "/6.jpg" },
-  { id: 7, name: "Noah Kim", city: "Lalitpur", review: "Amazing service, comfortable stay, and wonderful memories. Couldn’t ask for more!", img: "/7.jpg" },
-  { id: 8, name: "Aanya Patel", city: "Janakpur", review: "Traveling here was a dream come true. The landscapes were absolutely stunning.", img: "/8.jpg" },
-  { id: 9, name: "Oliver Brown", city: "Biratnagar", review: "I was impressed with the attention to detail. Every day felt like a new adventure.", img: "/9.jpg" },
-  { id: 10, name: "Hana Suzuki", city: "Hetauda", review: "Such a refreshing experience! I met wonderful people and enjoyed every bit of it.", img: "/10.jpg" },
+  { id: 1, name: "Aarav Sharma", city: "Pokhara", review: "The Basic Computer course was well-structured. It helped me build strong foundational skills in MS Office and typing." },
+  { id: 2, name: "Sita Gurung", city: "Pokhara", review: "Enrolling in the Computer Diploma program was the best decision. The practical sessions on hardware and networking were excellent." },
+  { id: 3, name: "Bishal Thapa", city: "Pokhara", review: "Great learning environment! The instructors explained fundamental concepts very clearly during the basic computer module." },
+  { id: 4, name: "Maya Shrestha", city: "Pokhara", review: "The Diploma course covered everything from office packages to basic web design. Highly recommend it to anyone starting out." },
+  { id: 5, name: "Rohan Karki", city: "Pokhara", review: "Smooth learning pace with plenty of hands-on practice. Perfect training center for mastering basic computer skills." },
+  { id: 6, name: "Pooja Adhikari", city: "Pokhara", review: "The instructors are super supportive. The Diploma in Computer Applications gave me the confidence I needed for my job." },
+  { id: 7, name: "Nirajan KC", city: "Pokhara", review: "Clear explanations, flexible time slots, and comprehensive course material for both Basic and Diploma levels." },
+  { id: 8, name: "Ananya Baniya", city: "Pokhara", review: "Studying the Computer Diploma here was a great experience. The practical assignments really boosted my problem-solving skills." },
+  { id: 9, name: "Sagar Poudel", city: "Pokhara", review: "Impressed with the step-by-step guidance in the Basic Computer course. Ideal for complete beginners." },
+  { id: 10, name: "Hema Tamang", city: "Pokhara", review: "Such a valuable learning experience! The Diploma course gave me a solid career foundation in IT." },
 ];
 
 export const courses = [

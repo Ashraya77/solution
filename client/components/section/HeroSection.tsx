@@ -12,17 +12,17 @@ type HeroImage = {
 
 const heroImages: HeroImage[] = [
   {
-    src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=85",
+    src: "/pic1.jpg",
     alt: "Students collaborating during a classroom training session",
     objectPosition: "object-[48%_50%]",
   },
   {
-    src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=85",
+    src: "/pic2.jpg",
     alt: "Student practicing computer skills on a laptop",
     objectPosition: "object-[58%_50%]",
   },
   {
-    src: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=700&q=85",
+    src: "/pic3.jpg",
     alt: "Instructor leading a practical classroom lesson",
     objectPosition: "object-[44%_50%]",
   },

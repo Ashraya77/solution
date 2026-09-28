@@ -6,8 +6,8 @@ import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 const organization = {
   name: "Solution Computer House",
   address: "Pokhara-25, Hemja, Gandaki Province, Nepal",
-  phone: "+977 (XX) XXX-XXXX",
-  email: "info@solutioncomputerhouse.com",
+  phone: "+977 9806673143",
+  email: "solutioncomputerhouse@gmail.com.com",
   mapLink: "https://maps.app.goo.gl/example",
 };
 

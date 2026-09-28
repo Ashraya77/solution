@@ -9,7 +9,6 @@ type CourseCardtypes = {
   title: string;
   duration: string;
   level: string;
-  price: string;
 }
 
 // 1. Define the animation variants for the individual card
@@ -53,9 +52,7 @@ const CourseCard = ({ title, duration, level, price }: CourseCardtypes) => {
             >
               {level}
             </motion.div>
-            <div className="text-xl font-black text-foreground italic tracking-tighter">
-              {price}
-            </div>
+           
           </div>
 
           <h3 className="text-2xl font-bold text-foreground leading-[1.1] mb-4 tracking-tight">
