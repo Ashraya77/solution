@@ -30,7 +30,7 @@ const cardVariants: Variants = {
   }
 };
 
-const CourseCard = ({ title, duration, level, price }: CourseCardtypes) => {
+const CourseCard = ({ title, duration, level }: CourseCardtypes) => {
   return (
     <motion.div 
       variants={cardVariants}
